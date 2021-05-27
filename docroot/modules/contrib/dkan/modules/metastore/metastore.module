@@ -1,0 +1,133 @@
+<?php
+
+/**
+ * @file
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\common\Exception\DataNodeLifeCycleEntityValidationException;
+use Drupal\common\Resource;
+use Drupal\metastore\Events\DatasetUpdate;
+use Drupal\metastore\LifeCycle\Data as LifeCycle;
+use Drupal\metastore\NodeWrapper\Data;
+use Drupal\metastore\Storage\Data as MetastoreData;
+use Drupal\node\NodeInterface;
+
+/**
+ * Implements hook_node_load().
+ */
+function metastore_node_load(array $entities) {
+
+  foreach ($entities as $entity) {
+    try {
+      metastore_get_data_node_lifecycle($entity)->load();
+    }
+    catch (DataNodeLifeCycleEntityValidationException $e) {
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+function metastore_entity_presave(EntityInterface $entity) {
+  try {
+    metastore_get_data_node_lifecycle($entity)->presave();
+  }
+  catch (DataNodeLifeCycleEntityValidationException $e) {
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_predelete().
+ */
+function metastore_node_predelete(EntityInterface $entity) {
+  try {
+    metastore_get_data_node_lifecycle($entity)->predelete();
+  }
+  catch (DataNodeLifeCycleEntityValidationException $e) {
+  }
+}
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function metastore_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+  if ($bundle === 'data') {
+    if (isset($fields['field_json_metadata'])) {
+      $fields['field_json_metadata']->addConstraint('ProperJson', []);
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ */
+function metastore_node_update(NodeInterface $node) {
+  purgeResources($node);
+}
+
+/**
+ * Purge resources (if unneeded) of any updated dataset.
+ */
+function purgeResources(NodeInterface $node) {
+  if ($node->bundle() == 'data'
+      && $node->get('field_data_type')->getString() == 'dataset'
+  ) {
+    \Drupal::service('event_dispatcher')->dispatch(
+      MetastoreData::EVENT_DATASET_UPDATE,
+      new DatasetUpdate($node)
+    );
+  }
+}
+
+/**
+ * Helper method to retrieve the static value for a resource's display.
+ */
+function resource_mapper_display() {
+  return drupal_static('metastore_resource_mapper_display', Resource::DEFAULT_SOURCE_PERSPECTIVE);
+}
+
+/**
+ * Helper method to retrieve the static value for a resource's revisioning.
+ */
+function resource_mapper_new_revision() {
+  return drupal_static('metastore_resource_mapper_new_revision', 0);
+}
+
+/**
+ * Create a LifeCycle object.
+ */
+function metastore_get_data_node_lifecycle($entity) {
+  $data = new Data($entity);
+
+  $lifeCycle = new LifeCycle($data);
+  $lifeCycle->setFileMapper(\Drupal::service('dkan.metastore.resource_mapper'));
+
+  return $lifeCycle;
+}
+
+function metastore_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  if (isset($form['field_json_metadata']['widget'][0]['value']['#default_value'])) {
+    $json = $form['field_json_metadata']['widget'][0]['value']['#default_value'];
+    if (empty($json)) {
+      return;
+    }
+    $object = json_decode($json);
+    $object = \Drupal\metastore\Service::removeReferences($object);
+    $form['field_json_metadata']['widget'][0]['value']['#default_value'] = json_encode($object);
+  }
+}
+
+function metastore_entity_view_alter(array &$build, Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display) {
+  if (isset($build['field_json_metadata'][0]['#context']['value'])) {
+    $json = $build['field_json_metadata'][0]['#context']['value'];
+    if (empty($json)) {
+      return;
+    }
+    $object = json_decode($json);
+    $object = \Drupal\metastore\Service::removeReferences($object);
+    $build['field_json_metadata'][0]['#context']['value'] = json_encode($object);
+  }
+}

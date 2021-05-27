@@ -1,0 +1,8 @@
+[submodule "docroot/modules/contrib/select2"]
+	path = docroot/modules/contrib/select2
+	url = https://git.drupalcode.org/project/select2.git
+	ignore = dirty
+[submodule "docroot/modules/contrib/select_or_other"]
+	path = docroot/modules/contrib/select_or_other
+	url = https://git.drupalcode.org/project/select_or_other.git
+	ignore = dirty

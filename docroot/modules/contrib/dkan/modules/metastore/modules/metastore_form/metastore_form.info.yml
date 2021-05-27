@@ -1,0 +1,5 @@
+name: Metadata Form - Deprecated
+description: Deprecated.
+package: DKAN
+type: module
+core_version_requirement: ^8 || ^9

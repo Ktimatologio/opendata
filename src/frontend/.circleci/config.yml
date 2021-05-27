@@ -1,0 +1,38 @@
+version: 2
+jobs:
+  build:
+    parallelism: 1
+    machine:
+      image: circleci/classic:latest
+    environment:
+      TEST_RESULTS: /tmp/test-results
+      DKTL_VERSION: "4.0.3"
+    steps:
+      - checkout
+      - run:
+          name: Install DKTL
+          command: |
+            git clone -b $DKTL_VERSION https://github.com/GetDKAN/dkan-tools.git ~/dkan-tools
+            echo "export PATH=~/dkan-tools/bin:$PATH" >> $BASH_ENV
+      - run:
+          name: Set up dirs
+          command: |
+            cd .. &&  mv project frontend
+            mkdir project
+      - run:
+          name: Create DKAN site with frontend; run tests
+          command: |
+            dktl init --dkan=2.x-dev
+            dktl make
+            dktl install
+            dktl install:sample
+            mv ../frontend src
+            dktl frontend:install
+            dktl frontend:build
+            dktl drush config-set frontend.config build_folder '/build' -y
+            dktl drush config-set frontend.config frontend_path '/frontend' -y
+            dktl frontend:test
+      - store_artifacts:
+          path: src/frontend/cypress/screenshots
+      - store_artifacts:
+          path: src/frontend/cypress/videos

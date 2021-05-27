@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Ελληνικό Κτηματολόγιο",
+    "imageUrl": "https://dkan-default-content-files.s3.amazonaws.com/files/publishers/map.png",
+    "description": "Το Εθνικό Κτηματολόγιο είναι ένα ενιαίο και διαρκώς ενημερωμένο σύστημα πληροφοριών που καταγράφει τις νομικές, τεχνικές και άλλες πρόσθετες πληροφορίες για τα ακίνητα και τα δικαιώματα πάνω σ΄αυτά, με την ευθύνη και την εγγύηση του Δημοσίου. 
+    Η σύνταξη του αποσκοπεί στη δημιουργία ενός σύγχρονου, πλήρως αυτοματοποιημένου αρχείου ακίνητης ιδιοκτησίας, όλα τα στοιχεία του οποίου έχουν αποδεικτικό χαρακτήρα, εξασφαλίζοντας τη μεγαλύτερη δυνατή δημοσιότητα και ασφάλεια των συναλλαγών.",
+    "searchUrl":"/search/?publisher__name=Elliniko Ktimatologio"
+  },
+  {
+    "name": "National Health Council",
+    "imageUrl": "https://dkan-default-content-files.s3.amazonaws.com/files/publishers/clipboard.png",
+    "description": "National Health Council is a working group that performs research and prepares reports to inform treatment and prevention programs nationally.",
+    "searchUrl":"/search/?publisher__name=National Health Council"
+  },
+  {
+    "name": "Committee on International Affairs",
+    "imageUrl": "https://dkan-default-content-files.s3.amazonaws.com/files/publishers/map.png",
+    "description": "The Committee on International Affairs is a working group to identify opportunities to learn from and collaborate with government and organizations across the globe.",
+    "searchUrl":"/search/?publisher__name=Committee on International Affairs"
+  }
+]
+

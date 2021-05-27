@@ -1,0 +1,42 @@
+services:
+  dkan.common.docs:
+    class: \Drupal\common\Docs
+    arguments:
+      - '@module_handler'
+      - '@request_stack'
+
+  dkan.common.job_store:
+    class: \Drupal\common\Storage\JobStoreFactory
+    arguments:
+      - '@database'
+
+  dkan.common.drupal_files:
+    class: \Drupal\common\Util\DrupalFiles
+    arguments:
+      - '@file_system'
+      - '@stream_wrapper_manager'
+
+  dkan.common.node_storage:
+    class: Drupal\node\NodeStorage
+    factory: entity_type.manager:getStorage
+    arguments: ['node']
+
+  dkan.common.file_fetcher:
+    class: \Drupal\common\FileFetcher\Factory
+    arguments:
+      - '@dkan.common.job_store'
+
+  dkan.common.dataset_info:
+    class: \Drupal\common\DatasetInfo
+    calls:
+      - [setStorage, ['@?dkan.metastore.storage']]
+      - [setDatastore, ['@?dkan.datastore.service']]
+      - [setResourceMapper, ['@?dkan.metastore.resource_mapper']]
+      - [setImportInfo, ['@?dkan.datastore.import_info']]
+
+  # @deprecated
+  common.docs:
+    class: \Drupal\common\Docs
+    arguments:
+      - '@module_handler'
+      - '@request_stack'

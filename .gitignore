@@ -1,0 +1,13 @@
+# Ignore dependencies that are managed with Composer.
+# Generally you should only ignore the root vendor directory. It's important
+# that core/assets/vendor and any other vendor directories within contrib or
+# custom module, theme, etc., are not ignored unless you purposely do so.
+/vendor/
+
+# Ignore configuration files that may contain sensitive information.
+src/site/settings*.php
+src/site/*/services*.yml
+
+# Ignore paths that contain user-generated content.
+src/site/files
+src/site/private
