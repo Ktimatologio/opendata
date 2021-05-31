@@ -1,6 +1,6 @@
 {
   "container": "container",
-  "site": "Ελληνικό Κτηματολόγιο",
+  "site": "ΕΛΛΗΝΙΚΟ ΚΤΗΜΑΤΟΛΟΓΙΟ",
   "slogan": "Κατάλογος ανοιχτών δεδομένων",
-  "logo": "https://www.ktimatologio.gr/assets/images/logo.png"
+  "logo": "/frontend/src/theme/images/logo_ktim_sm.png"
 }

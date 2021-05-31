@@ -1,22 +1,22 @@
 {
   "main": [
     {
-      "label": "Home",
+      "label": "Αρχική",
       "url": "/",
       "target": "_top"
     },
     {
-      "label": "Datasets",
+      "label": "Σύνολα δεδομένων",
       "url": "/search",
       "target": "_top"
     },
     {
-      "label": "Publishers",
+      "label": "Εκδότες",
       "url": "/publishers",
       "target": "_top"
     },
     {
-      "label": "About",
+      "label": "Σχετικά",
       "url": "/about",
       "target": "_top"
     },
