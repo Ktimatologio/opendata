@@ -40,7 +40,7 @@ const ApiDocsSpecific = ({ id, location }) => {
       renderOrg = <Organization name={orgName} description={orgDesc}/>;
     }
   return (
-    <Layout title="Dataset API">
+    <Layout title="API Συνόλου Δεδομένων">
     <div className={`dc-dataset-page ${config.container}`}>
        <Loader
           backgroundStyle={{ backgroundColor: "#f9fafb" }}

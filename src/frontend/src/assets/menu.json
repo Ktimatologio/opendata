@@ -28,38 +28,38 @@
   ],
   "footer1": [
     {
-      "label": "Documentation",
-      "url": "https://docs.getdkan.com",
+      "label": "Σύνολα δεδομένων",
+      "url": "/search",
       "target": "_blank"
     },
     {
-      "label": "Visit Demo",
-      "url": "https://demo.getdkan.com",
+      "label": "Εκδότες",
+      "url": "/publishers",
       "target": "_blank"
     },
     {
-      "label": "Download",
-      "url": "https://github.com/getdkan/dkan"
+      "label": "Σχετικά",
+      "url": "/about"
     },
     {
-      "label": "CivicActions",
-      "url": "https://civicactions.com",
+      "label": "API",
+      "url": "/api",
       "target": "_blank"
     }
   ],
   "footer2": [
     {
-      "label": "Project Open Data",
-      "url": "https://project-open-data.cio.gov"
+      "label": "Όροι χρήσης",
+      "url": "https://www.ktimatologio.gr/terms"
     },
     {
-      "label": "DCAT",
-      "url": "https://www.w3.org/TR/vocab-dcat/",
+      "label": "Πολιτική απορρήτου",
+      "url": "https://www.ktimatologio.gr/privacy-policy",
       "target": "_blank"
     },
     {
-      "label": "Drupal",
-      "url": "https://drupal.org",
+      "label": "Πολιτική cookies",
+      "url": "https://www.ktimatologio.gr/cookies",
       "target": "_blank"
     },
     {

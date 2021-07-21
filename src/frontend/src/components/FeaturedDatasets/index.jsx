@@ -9,7 +9,7 @@ import './featureddatasets.scss';
 const FeaturedDatasets = ({ datasets }) => {
   return (
     <div className={`dc-featured-datasets ${config.container}`}>
-      <h2 className="dc-featured-title">Featured Datasets</h2>
+      <h2 className="dc-featured-title">Πιο πρόσφατα</h2>
       <ol>
         {datasets.map((item) => (
           <li>

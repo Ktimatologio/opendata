@@ -4,7 +4,7 @@ import Layout from "../../components/Layout";
 import { ApiDocs } from "@civicactions/data-catalog-components";
 
 const ApiDocsFull = ({ path }) => (
-  <Layout title="API Documentation">
+  <Layout title="Οδηγός API">
   <div className={`dc-page ${config.container}`}>
     <div className="page-content">
       {typeof window !== `undefined` && (

@@ -76,27 +76,27 @@ const Dataset = ({id, location}) => {
   const valuesT3 = {};
 
   if (orgName && orgName.length > 0) {
-    labelsT3.publisher = { label: "Publisher" };
+    labelsT3.publisher = { label: "Εκδότης" };
     valuesT3.publisher = orgName;
   }
   if ("identifier" in item && item.identifier) {
-    labelsT3.identifier = { label: "Identifier" };
+    labelsT3.identifier = { label: "Αναγνωριστικό" };
     valuesT3.identifier = item.identifier;
   }
   if ("issued" in item && item.issued) {
-    labelsT3.issued = { label: "Issued" };
+    labelsT3.issued = { label: "Δημιουργήθηκε" };
     valuesT3.issued = item.issued;
   }
   if ("modified" in item && item.modified) {
-    labelsT3.modified = { label: "Last Update" };
+    labelsT3.modified = { label: "Τελ. Ενημέρωση" };
     valuesT3.modified = item.modified;
   }
   if ("license" in item && item.license) {
-    labelsT3.license = { label: "License" };
+    labelsT3.license = { label: "Άδεια" };
     valuesT3.license = `<a href="${item.license}">${item.license}</a>`;
   }
   if ("contactPoint" in item && item.contactPoint && item.contactPoint.fn) {
-    labelsT3.contact = { label: "Contact" };
+    labelsT3.contact = { label: "Επικοινωνία" };
     valuesT3.contact = item.contactPoint.fn;
   }
   if (
@@ -104,15 +104,15 @@ const Dataset = ({id, location}) => {
     item.contactPoint &&
     item.contactPoint.hasEmail
   ) {
-    labelsT3.email = { label: "Contact E-mail" };
+    labelsT3.email = { label: "E-mail Επικοινωνίας" };
     valuesT3.email = `<a href="${item.contactPoint.hasEmail}">${item.contactPoint.hasEmail}</a>`;
   }
   if ("accessLevel" in item && item.accessLevel) {
-    labelsT3.access = { label: "Public Access Level" };
+    labelsT3.access = { label: "Πρόσβαση" };
     valuesT3.access = item.accessLevel;
   }
   if ("landingPage" in item && item.landingPage) {
-    labelsT3.homepage = { label: "Homepage URL" };
+    labelsT3.homepage = { label: "URL Αρχικής σελίδας" };
     valuesT3.homepage = `<a href="${item.landingPage}">${item.landingPage}</a>`;
   }
 
@@ -123,7 +123,7 @@ const Dataset = ({id, location}) => {
           <div className="col-md-3 col-sm-12">
             {renderOrg}
             <div className="dc-block-wrapper">
-              The information on this page is also available via the{" "}
+              Η πληροφορία είναι διαθέσιμη και στο {" "}
               <Link
                 to={`/dataset/${item.identifier}/api`}
                 state={{ dataset: {...item} }}
@@ -140,7 +140,7 @@ const Dataset = ({id, location}) => {
               item.distribution.map(dist => {
                 return <ResourceTemplate key={dist.identifier} resource={dist} identifier={dist.identifier} />;
               })}
-            <Tags tags={tag} path="/search?keyword=" label="Tags" />
+            <Tags tags={tag} path="/search?keyword=" label="Ετικέτες" />
             {/* <Table
               configuration={labelsT2}
               data={valuesT2}

@@ -1,29 +1,25 @@
 {
   "hero": [
     {
-      "title": "Welcome to DKAN",
-      "intro": "DKAN is an open-source data management platform. It treats data as content so that you can easily publish, manage, and maintain your open data no matter the size of your team or the level of technical expertise.",
+      "title": "Κατάλογος Ανοιχτών Δεδομένων Ελληνικού Κτηματολογίου",
+      "intro": "Το Εθνικό Κτηματολόγιο είναι ένα ενιαίο και διαρκώς ενημερωμένο σύστημα πληροφοριών που καταγράφει τις νομικές, τεχνικές και άλλες πρόσθετες πληροφορίες για τα ακίνητα και τα δικαιώματα πάνω σ΄αυτά, με την ευθύνη και την εγγύηση του Δημοσίου.",
       "ref": "0"
     }
   ],
   "stats": [
     {
-      "content": "Dataset Downloads",
-      "title": "583k",
-      "icon": "download",
+      "content": "Απόφαση του ΔΣ του Ελληνικού Κτηματολογίου για την διάθεση Ανοιχτών Δεδομένων",
+      "href": "https://www.ktimatologio.gr/photo/medium/202012/zz2moq1607000881211.pdf",
+      "title": "",
+      "icon": "",
       "ref": "1"
     },
     {
-      "content": "API Queries Run",
-      "title": "317k",
-      "icon": "sync",
+      "content": "Πίνακας Ανοιχτών Δεδομένων του Ελληνικού Κτηματολογίου",
+      "href": "https://www.ktimatologio.gr/photo/medium/202012/hkq36j1607001500322.XLSX",
+      "title": "",
+      "icon": "",
       "ref": "2"
-    },
-    {
-      "content": "Total Datasets",
-      "title": "2.63k",
-      "icon": "database",
-      "ref": "3"
     }
   ]
 }

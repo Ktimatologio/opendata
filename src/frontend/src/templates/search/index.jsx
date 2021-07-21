@@ -8,9 +8,9 @@ import config from "../../assets/config";
 const SearchTemplate = ({path}) => {
   const location = useLocation();
   return (
-    <Layout title="Search">
+    <Layout title="Αναζήτηση">
     <div className={`dc-page ${config.container}`}>
-        <h1>Datasets</h1>
+        <h1>Σύνολα Δεδομένων</h1>
         <Search
           searchEndpoint={`${process.env.REACT_APP_ROOT_URL}/search`}
           defaultFacets={defaultFacets}
