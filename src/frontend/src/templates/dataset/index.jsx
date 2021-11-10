@@ -413,13 +413,13 @@ const Dataset = ({id, location}) => {
     // valuesT3.periodicity = item.accrualPeriodicity;
     var item_accrual_periodicity = item.accrualPeriodicity;
     if (item_accrual_periodicity === "R/P10Y") {
-      valuesT3.periodicity =  "Δεκαετία";
+      valuesT3.periodicity =  "Δεκαετής";
     }
     else if (item_accrual_periodicity === "R/P4Y") {
-      valuesT3.periodicity = "Τετραετία";
+      valuesT3.periodicity = "Τετραετής";
     }
     else if (item_accrual_periodicity === "R/P1Y") {
-      valuesT3.periodicity = "Ετήσιο";
+      valuesT3.periodicity = "Ετήσια";
     }
     else if (item_accrual_periodicity === "R/P2M") {
       valuesT3.periodicity = "Διμηνιαία";
@@ -428,19 +428,19 @@ const Dataset = ({id, location}) => {
       valuesT3.periodicity = "Δύο φορές την εβδομάδα";
     }
     else if (item_accrual_periodicity === "R/P1D") {
-      valuesT3.periodicity = "Ημερήσιο";
+      valuesT3.periodicity = "Ημερήσια";
     }
     else if (item_accrual_periodicity === "R/P2W") {
       valuesT3.periodicity = "Ανά δύο εβδομάδες";
     }
     else if (item_accrual_periodicity === "R/P6M") {
-      valuesT3.periodicity = "Εξάμηνο";
+      valuesT3.periodicity = "Εξαμηνιαία";
     }
     else if (item_accrual_periodicity === "R/P2Y") {
-      valuesT3.periodicity = "Διετία";
+      valuesT3.periodicity = "Διετής";
     }
     else if (item_accrual_periodicity === "R/P3Y") {
-      valuesT3.periodicity = "Τριετία";
+      valuesT3.periodicity = "Τριετής";
     }
     else if (item_accrual_periodicity === "R/P0.33W") {
       valuesT3.periodicity = "Τρεις φορές την εβδομάδα";
@@ -449,19 +449,19 @@ const Dataset = ({id, location}) => {
       valuesT3.periodicity = "Τρεις φορές το μήνα";
     }
     else if (item_accrual_periodicity === "R/PT1S") {
-      valuesT3.periodicity = "Συνεχόμενα";
+      valuesT3.periodicity = "Συνεχόμενη";
     }
     else if (item_accrual_periodicity === "R/P1M") {
       valuesT3.periodicity = "Μηνιαία";
     }
     else if (item_accrual_periodicity === "R/P3M") {
-      valuesT3.periodicity = "Τρίμηνο";
+      valuesT3.periodicity = "Τριμηνιαία";
     }
     else if (item_accrual_periodicity === "R/P0.5M") {
-      valuesT3.periodicity = "Δεκαπενθήμερο";
+      valuesT3.periodicity = "Δεκαπενθήμερη";
     }
     else if (item_accrual_periodicity === "R/P4M") {
-      valuesT3.periodicity = "Τετράμηνο";
+      valuesT3.periodicity = "Τετραμηνιαία";
     }
     else if (item_accrual_periodicity === "R/P1W") {
       valuesT3.periodicity = "Ανά μία εβδομάδα";
