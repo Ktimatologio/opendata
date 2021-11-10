@@ -422,7 +422,7 @@ const Dataset = ({id, location}) => {
       valuesT3.periodicity = "Ετήσιο";
     }
     else if (item_accrual_periodicity === "R/P2M") {
-      valuesT3.periodicity = "Δίμινο";
+      valuesT3.periodicity = "Διμηνιαία";
     }
     else if (item_accrual_periodicity === "R/P3.5D") {
       valuesT3.periodicity = "Δύο φορές την εβδομάδα";
@@ -452,7 +452,7 @@ const Dataset = ({id, location}) => {
       valuesT3.periodicity = "Συνεχόμενα";
     }
     else if (item_accrual_periodicity === "R/P1M") {
-      valuesT3.periodicity = "Μινιαίο";
+      valuesT3.periodicity = "Μηνιαία";
     }
     else if (item_accrual_periodicity === "R/P3M") {
       valuesT3.periodicity = "Τρίμηνο";

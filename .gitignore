@@ -15,3 +15,5 @@ src/site/private
 !src/frontend/node_modules
 src/frontend/node_modules/*
 !src/frontend/node_modules/@civicactions
+
+docroot/harvest/stats/*
