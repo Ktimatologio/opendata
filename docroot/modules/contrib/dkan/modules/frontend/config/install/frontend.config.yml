@@ -9,3 +9,6 @@ routes:
   - datasetapi,/dataset/{id}/api
   - search,/search
   - publishers,/publishers
+  - project,/project
+  - opendata,/opendata
+  

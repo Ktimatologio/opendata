@@ -1,6 +1,6 @@
 {
   "container": "container",
   "site": "ΕΛΛΗΝΙΚΟ ΚΤΗΜΑΤΟΛΟΓΙΟ",
-  "slogan": "Κατάλογος ανοιχτών δεδομένων",
+  "slogan": "Open Data Portal",
   "logo": "/frontend/src/theme/images/logo_ktim_sm.png"
 }

@@ -6,8 +6,8 @@
   list-style: none;
   padding: 0;
   .dc-org-block {
-    min-width: 24%;
-    max-width: 24%;
+    min-width: 100%;
+    max-width: 100%;
   }
   @media screen and (max-width: 768px) {
     .dc-org-block {

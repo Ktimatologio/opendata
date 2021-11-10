@@ -11,3 +11,7 @@ src/site/*/services*.yml
 # Ignore paths that contain user-generated content.
 src/site/files
 src/site/private
+
+!src/frontend/node_modules
+src/frontend/node_modules/*
+!src/frontend/node_modules/@civicactions

@@ -1,8 +1,42 @@
 import React from 'react';
+import "../i18n";
+import { useTranslation } from 'react-i18next';
+
+function Topics() {
+  const { t, i18n } = useTranslation();
+  return (
+    <span>{t('facet_topics')}</span>
+  );
+}
+function Tags() {
+  const { t, i18n } = useTranslation();
+  return (
+    <span>{t('facet_tags')}</span>
+  );
+}
+function Publishers() {
+  const { t, i18n } = useTranslation();
+  return (
+    <span>{t('facet_publishers')}</span>
+  );
+}
+
+function Order_abc() {
+  const { t, i18n } = useTranslation();
+  return (
+    <span>{t('order_abc')}</span>
+  );
+}
+function Order_date() {
+  const { t, i18n } = useTranslation();
+  return (
+    <span>{t('order_date')}</span>
+  );
+}
 
 export const defaultFacets = {
   "theme": {
-    "label": "Θεματικές",
+    "label": <Topics/>,
     "field": "theme.0.title",
     "showAll": false,
     "limit": 10,
@@ -12,7 +46,7 @@ export const defaultFacets = {
     },
   },
   "keyword": {
-    "label": "Ετικέτες",
+    "label": <Tags/>,
     "field": "keyword.*.title",
     "showAll": false,
     "limit": 10,
@@ -22,7 +56,7 @@ export const defaultFacets = {
     },
   },
   "publisher__name": {
-    "label": "Εκδότες",
+    "label": <Publishers/>,
     "field": "publisher__name",
     "showAll": false,
     "limit": 10,
@@ -60,6 +94,9 @@ export function normalizeItems(resultItems) {
     return item;
   });
 }
+
+// const order_date = 'Ημερομηνία';
+// const order_abc = 'Αλφαβητικά';
 
 export const sortOptions = [
   {

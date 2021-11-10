@@ -9,14 +9,16 @@
     display: inline-block;
     vertical-align: bottom;
     line-height: 1em;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     a {
       color: $headingColor;
       font-size: 1.8rem;
+      font-weight: 700;
     }
   }
   .dc-slogan {
     margin-top: 10px;
+    font-weight: 400;
   }
 
   @media screen and (max-width: 768px) {

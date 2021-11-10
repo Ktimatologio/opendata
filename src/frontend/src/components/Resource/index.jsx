@@ -31,7 +31,7 @@ const ResourceTemplate = ({ resource }) => {
               format={format}
               downloadURL={downloadURL ? downloadURL : accessURL}
             />
-            <DataTableHeader />
+            {/* <DataTableHeader /> */}
             <DataTable />
           </Resource>
         )

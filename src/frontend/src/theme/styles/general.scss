@@ -56,3 +56,17 @@ body {
     }
   }
 }
+
+.lang_switch {
+  float: right;
+  padding: 20px 12em;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.lang_switch button {
+  background: transparent;
+  border: none;
+  font-size: 14px;
+}

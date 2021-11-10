@@ -1,4 +1,6 @@
 import React from "react";
+import "../../i18n";
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import {
   Blocks,
@@ -10,6 +12,35 @@ import {
 import Layout from '../../components/Layout';
 import FeaturedDatasets from '../../components/FeaturedDatasets';
 import copy from "../../assets/copy.json";
+
+function Herotitle() {
+  const { t, i18n } = useTranslation();
+  return (
+    <span>{t('hero_title')}</span>
+  );
+}
+
+function Herointro() {
+  const { t, i18n } = useTranslation();
+  return (
+    <span>{t('hero_intro')}</span>
+  );
+}
+
+function SubmitContent() {
+  const { t, i18n } = useTranslation();
+  return (
+    <span>{t('submit_content')}</span>
+  );
+}
+
+function Topics() {
+  const { t, i18n } = useTranslation();
+  return (
+    <span>{t('topics')}</span>
+  );
+}
+
 
 const Home = () => {
   const [datasets, setDatasets] = React.useState(null);
@@ -55,12 +86,12 @@ const Home = () => {
   return (
     <Layout title="Home">
         <div className="home-page">
-        <Hero title={copy.hero[0].title} intro={copy.hero[0].intro} gradient={'rgb(8, 72, 49), rgb(34, 121, 90)'} />
+        <Hero title={<Herotitle/>} intro={<Herointro/>} submitContent={<SubmitContent/>} gradient={'rgb(8, 72, 49), rgb(34, 121, 90)'} />
         <div className="container">
             <IconList
                 items={items}
                 component={IconListItem}
-                paneTitle="Θεματικές"
+                paneTitle={<Topics/>}
                 className="opendata-icon-list"
             />
         </div>
