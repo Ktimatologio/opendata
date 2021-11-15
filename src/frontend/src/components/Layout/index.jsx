@@ -175,7 +175,7 @@ const links_ = {
     "footer2": [
       {
         "label": <Labelterms/>,
-        "url": "https://www.ktimatologio.gr/terms"
+        "url": "https://www.ktimatologio.gr/el/page/oroi-hrisis"
       },
       {
         "label": <Labelprivacy/>,

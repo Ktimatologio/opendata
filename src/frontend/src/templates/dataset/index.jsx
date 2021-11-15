@@ -478,7 +478,7 @@ const Dataset = ({id, location}) => {
     valuesT3.homepage = `<a href="${item.landingPage}">${item.landingPage}</a>`;
   }
   labelsT3.homepage = { label: <Terms_of_use/> };
-  valuesT3.homepage = `<a href="https://www.ktimanet.gr/geoportal/misc/Terms_of_use.htm" target="_blank">https://www.ktimanet.gr/geoportal/misc/Terms_of_use.htm</a>`;
+  valuesT3.homepage = `<a href="https://www.ktimatologio.gr/el/page/oroi-hrisis" target="_blank">https://www.ktimatologio.gr/el/page/oroi-hrisis</a>`;
 
   return (
     <Layout title={`Σύνολο δεδομένων - ${item.title}`}>
