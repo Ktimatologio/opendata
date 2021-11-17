@@ -62,6 +62,12 @@ function Labelabout() {
     <span>{t('menu_about')}</span>
   );
 }
+function Label_opendata() {
+  const { t, i18n } = useTranslation();
+  return (
+    <span>{t('menu_opendata')}</span>
+  );
+}
 
 function Labelterms() {
   const { t, i18n } = useTranslation();
@@ -146,6 +152,11 @@ const links_ = {
     {
       "label": "API",
       "url": "/api",
+      "target": "_top"
+    },
+    {
+      "label": <Label_opendata/>,
+      "url": "/opendata",
       "target": "_top"
     }
   ]};

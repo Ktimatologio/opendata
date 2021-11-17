@@ -86,7 +86,7 @@ const Home = () => {
   return (
     <Layout title="Home">
         <div className="home-page">
-        <Hero title={<Herotitle/>} intro={<Herointro/>} submitContent={<SubmitContent/>} gradient={'rgb(8, 72, 49), rgb(34, 121, 90)'} />
+        {/* <Hero title={<Herotitle/>} intro={<Herointro/>} submitContent={<SubmitContent/>} gradient={'rgb(8, 72, 49), rgb(34, 121, 90)'} /> */}
         <div className="container">
             <IconList
                 items={items}
@@ -95,13 +95,15 @@ const Home = () => {
                 className="opendata-icon-list"
             />
         </div>
+        <Hero title={<Herotitle/>} intro={<Herointro/>} submitContent={<SubmitContent/>} gradient={'rgb(8, 72, 49), rgb(34, 121, 90)'} />
+        <FeaturedDatasets datasets={fDatasets} />
         <Blocks
             items={copy.stats}
             component={StatBlock}
             containerClass=""
             blockClass="StatBlock"
         />
-        <FeaturedDatasets datasets={fDatasets} />
+        {/* <FeaturedDatasets datasets={fDatasets} /> */}
         </div>
     </Layout>
   );

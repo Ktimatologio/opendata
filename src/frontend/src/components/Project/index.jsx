@@ -47,7 +47,8 @@ const TheProject = ({ path }) => (
                 </div>
                 <div className="col-md-3 col-sm-12">
                     <Announcement variation="info" heading="">
-                    <p></p>
+                        <p><a href="/about">Ο Φορέας</a></p>
+                        <p><a href="/opendata">Σχετικά</a></p>
                     </Announcement>
                 </div>
             </div>

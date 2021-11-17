@@ -40,7 +40,7 @@ const About = ({ path }) => (
                 <div className="col-md-3 col-sm-12">
                     <Announcement variation="info" heading="">
                     <p><a href="/project">Το έργο</a></p>
-                    <p><a href="/opendata">Ανοιχτά Δεδομένα Ελληνικού Κτηματολογίου</a></p>
+                    <p><a href="/opendata">Σχετικά</a></p>
                     </Announcement>
                 </div>
             </div>
