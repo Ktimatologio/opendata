@@ -8,7 +8,6 @@ import ApiDocsFull from './templates/api';
 import NotFound from './templates/not_found';
 import Dataset from './templates/dataset';
 import ApiDocsSpecific from './templates/dataset/api';
-import Publishers from './templates/publishers';
 import Project from './components/Project';
 import Opendata from './components/Opendata';
 import '@civicactions/data-catalog-components/dist/index.css';
@@ -27,7 +26,6 @@ function App() {
       <About path="/about"/>
       <Project path="/project" />
       <Opendata path="/opendata" />
-      <Publishers path="/publishers" />
       <SearchTemplate path="/search" />
       <ApiDocsFull path="/api" />
       <Dataset path="/dataset/:id" />

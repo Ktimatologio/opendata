@@ -140,11 +140,6 @@ const links_ = {
       "target": "_top"
     },
     {
-      "label": <Labelpublishers/>,
-      "url": "/publishers",
-      "target": "_top"
-    },
-    {
       "label": <Labelabout/>,
       "url": "/about",
       "target": "_top"
