@@ -17,3 +17,5 @@ src/frontend/node_modules/*
 !src/frontend/node_modules/@civicactions
 
 docroot/harvest/stats/*
+docroot/*.sql
+docroot/dkanktim.tar.gz

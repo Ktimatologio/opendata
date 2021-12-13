@@ -58,15 +58,43 @@ body {
 }
 
 .lang_switch {
-  float: right;
-  padding: 20px 12em;
-  position: absolute;
-  top: 0;
-  right: 0;
+  padding: 10px;
+  text-align: center;
 }
 
 .lang_switch button {
   background: transparent;
   border: none;
   font-size: 14px;
+  color: #fff;
 }
+
+#top-box {
+  height: 50px;
+  color: #fff;
+  background-color: $primary;
+}
+
+.social-header-icons {
+  display: flex;
+  justify-content: center;
+  margin-top: 7px;
+}
+.social-header-icon {
+  float: left;
+  border-radius: 100%;
+}
+.icon {
+  background: #fff;
+  display: inline-block;
+  font-size: 20px;
+  width: 34px;
+  height: 34px;
+  line-height: 34px;
+  margin: auto;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: top;
+}
+
+

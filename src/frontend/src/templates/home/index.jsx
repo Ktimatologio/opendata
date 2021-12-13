@@ -95,14 +95,14 @@ const Home = () => {
                 className="opendata-icon-list"
             />
         </div>
-        <Hero title={<Herotitle/>} intro={<Herointro/>} submitContent={<SubmitContent/>} gradient={'rgb(8, 72, 49), rgb(34, 121, 90)'} />
+        <Hero title={<Herotitle/>} intro={<Herointro/>} submitContent={<SubmitContent/>} gradient={'rgb(74, 117, 168), rgb(74, 117, 168)'} />
         <FeaturedDatasets datasets={fDatasets} />
-        <Blocks
+        {/* <Blocks
             items={copy.stats}
             component={StatBlock}
             containerClass=""
             blockClass="StatBlock"
-        />
+        /> */}
         {/* <FeaturedDatasets datasets={fDatasets} /> */}
         </div>
     </Layout>

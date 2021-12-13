@@ -5,12 +5,22 @@ $array = array();
 $array = preg_split('/\n|\r\n?/', $str);
 array_shift($array);
 
-$date = preg_split('#\r?\n#', $str, 0)[0];
-$date = explode('|', $date);
-$date = date("m-Y", strtotime($date[0]));
+// $date = preg_split('#\r?\n#', $str, 0)[0];
+// $date = explode('|', $date);
+// $date = date("Y-m", strtotime($date[0]));
+$date = date("Y-m");
+$year = date("Y");
+
+if (!file_exists('../sites/default/files/stats')) {
+  mkdir('../sites/default/files/stats', 0777, true);
+}
 
 if($_GET["stat"] == 1) {
-  $fp = fopen('stats/geotemaxia_ota_'.$date.'.csv', 'w'); 
+  //geotemaxia_ota
+  if (!file_exists('../sites/default/files/stats/geotemaxia_ota/'.$year.'')) {
+    mkdir('../sites/default/files/stats/geotemaxia_ota/'.$year.'', 0777, true);
+  }
+  $fp = fopen('../sites/default/files/stats/geotemaxia_ota/'.$year.'/geotemaxia_ota_'.$date.'.csv', 'w'); 
   foreach($array as $key => $str)
   {
     $array[$key] = explode('~', $str);
@@ -21,12 +31,16 @@ if($_GET["stat"] == 1) {
 
   }
   fclose($fp);
-  header('Location: stats/geotemaxia_ota_'.$date.'.csv');
+  header('Location: ../sites/default/files/stats/geotemaxia_ota/'.$year.'/geotemaxia_ota_'.$date.'.csv');
   exit;
   
 } 
 elseif($_GET["stat"] == 2) {
-  $fp = fopen('stats/ktimatografisi_ota_'.$date.'.csv', 'w'); 
+  //ktimatografisi_ota
+  if (!file_exists('../sites/default/files/stats/ktimatografisi_ota/'.$year.'')) {
+    mkdir('../sites/default/files/stats/ktimatografisi_ota/'.$year.'', 0777, true);
+  }
+  $fp = fopen('../sites/default/files/stats/ktimatografisi_ota_'.$date.'.csv', 'w'); 
   foreach($array as $key => $str)
   {
     $array[$key] = explode('~', $str);
@@ -37,11 +51,15 @@ elseif($_GET["stat"] == 2) {
 
   }
   fclose($fp);
-  header('Location: stats/ktimatografisi_ota_'.$date.'.csv');
+  header('Location: ../sites/default/files/stats/ktimatografisi_ota_'.$date.'.csv');
   exit;
 }
 elseif($_GET["stat"] == 3) {
-  $fp = fopen('stats/or_idioktisies_ota_'.$date.'.csv', 'w'); 
+  //or_idioktisies_ota
+  if (!file_exists('../sites/default/files/stats/or_idioktisies_ota/'.$year.'')) {
+    mkdir('../sites/default/files/stats/or_idioktisies_ota/'.$year.'', 0777, true);
+  }
+  $fp = fopen('../sites/default/files/stats/or_idioktisies_ota_'.$date.'.csv', 'w'); 
   foreach($array as $key => $str)
   {
     $array[$key] = explode('~', $str);
@@ -52,11 +70,15 @@ elseif($_GET["stat"] == 3) {
 
   }
   fclose($fp);
-  header('Location: stats/or_idioktisies_ota_'.$date.'.csv');
+  header('Location: ../sites/default/files/stats/or_idioktisies_ota_'.$date.'.csv');
   exit;
 }
 elseif($_GET["stat"] == 4) {
-  $fp = fopen('stats/idioktites_ota_'.$date.'.csv', 'w'); 
+  //idioktites_ota
+  if (!file_exists('../sites/default/files/stats/idioktites_ota/'.$year.'')) {
+    mkdir('../sites/default/files/stats/idioktites_ota/'.$year.'', 0777, true);
+  }
+  $fp = fopen('../sites/default/files/stats/idioktites_ota_'.$date.'.csv', 'w'); 
   foreach($array as $key => $str)
   {
     $array[$key] = explode('~', $str);
@@ -67,11 +89,15 @@ elseif($_GET["stat"] == 4) {
 
   }
   fclose($fp);
-  header('Location: stats/idioktites_ota_'.$date.'.csv');
+  header('Location: ../sites/default/files/stats/idioktites_ota_'.$date.'.csv');
   exit;
 }
 elseif($_GET["stat"] == 5) {
-  $fp = fopen('stats/agorapolisies_ota_'.$date.'.csv', 'w'); 
+  //agorapolisies_ota
+  if (!file_exists('../sites/default/files/stats/agorapolisies_ota/'.$year.'')) {
+    mkdir('../sites/default/files/stats/agorapolisies_ota/'.$year.'', 0777, true);
+  }
+  $fp = fopen('../sites/default/files/stats/agorapolisies_ota_'.$date.'.csv', 'w'); 
   foreach($array as $key => $str)
   {
     $array[$key] = explode('~', $str);
@@ -82,11 +108,15 @@ elseif($_GET["stat"] == 5) {
 
   }
   fclose($fp);
-  header('Location: stats/agorapolisies_ota_'.$date.'.csv');
+  header('Location: ../sites/default/files/stats/agorapolisies_ota_'.$date.'.csv');
   exit;
 }
 elseif($_GET["stat"] == 6) {
-  $fp = fopen('stats/ypothikes_ota_'.$date.'.csv', 'w'); 
+  //ypothikes_ota
+  if (!file_exists('../sites/default/files/stats/ypothikes_ota/'.$year.'')) {
+    mkdir('../sites/default/files/stats/ypothikes_ota/'.$year.'', 0777, true);
+  }
+  $fp = fopen('../sites/default/files/stats/ypothikes_ota_'.$date.'.csv', 'w'); 
   foreach($array as $key => $str)
   {
     $array[$key] = explode('~', $str);
@@ -97,11 +127,15 @@ elseif($_GET["stat"] == 6) {
 
   }
   fclose($fp);
-  header('Location: stats/ypothikes_ota_'.$date.'.csv');
+  header('Location: ../sites/default/files/stats/ypothikes_ota_'.$date.'.csv');
   exit;
 }
 elseif($_GET["stat"] == 7) {
-  $fp = fopen('stats/katasxeseis_ota_'.$date.'.csv', 'w'); 
+  //katasxeseis_ota
+  if (!file_exists('../sites/default/files/stats/katasxeseis_ota/'.$year.'')) {
+    mkdir('../sites/default/files/stats/katasxeseis_ota/'.$year.'', 0777, true);
+  }
+  $fp = fopen('../sites/default/files/stats/katasxeseis_ota_'.$date.'.csv', 'w'); 
   foreach($array as $key => $str)
   {
     $array[$key] = explode('~', $str);
@@ -112,11 +146,15 @@ elseif($_GET["stat"] == 7) {
 
   }
   fclose($fp);
-  header('Location: stats/katasxeseis_ota_'.$date.'.csv');
+  header('Location: ../sites/default/files/stats/katasxeseis_ota_'.$date.'.csv');
   exit;
 }
 elseif ($_GET["stat"] == 8) {
-  $fp = fopen('stats/emvado_orizontion_ota_'.$date.'.csv', 'w'); 
+  //emvado_orizontion_ota
+  if (!file_exists('../sites/default/files/stats/emvado_orizontion_ota/'.$year.'')) {
+    mkdir('../sites/default/files/stats/emvado_orizontion_ota/'.$year.'', 0777, true);
+  }
+  $fp = fopen('../sites/default/files/stats/emvado_orizontion_ota_'.$date.'.csv', 'w'); 
   foreach($array as $key => $str)
   {
     $array[$key] = explode('~', $str);
@@ -127,7 +165,7 @@ elseif ($_GET["stat"] == 8) {
 
   }
   fclose($fp);
-  header('Location: stats/emvado_orizontion_ota_'.$date.'.csv');
+  header('Location: ../sites/default/files/stats/emvado_orizontion_ota_'.$date.'.csv');
   exit;
 }
 else {

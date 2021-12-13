@@ -390,7 +390,7 @@ const Dataset = ({id, location}) => {
   }
   if ("license" in item && item.license) {
     labelsT3.license = { label: <License/> };
-    valuesT3.license = `<a href="${item.license}">${item.license}</a>`;
+    valuesT3.license = `<a href="${item.license}">Άδεια</a>`;
   }
   if ("contactPoint" in item && item.contactPoint && item.contactPoint.fn) {
     labelsT3.contact = { label: <Contactpoint/> };
@@ -478,7 +478,7 @@ const Dataset = ({id, location}) => {
     valuesT3.homepage = `<a href="${item.landingPage}">${item.landingPage}</a>`;
   }
   labelsT3.homepage = { label: <Terms_of_use/> };
-  valuesT3.homepage = `<a href="https://www.ktimatologio.gr/el/page/oroi-hrisis" target="_blank">https://www.ktimatologio.gr/el/page/oroi-hrisis</a>`;
+  valuesT3.homepage = `<a href="https://www.ktimatologio.gr/el/page/oroi-hrisis" target="_blank">Όροι χρήσης</a>`;
 
   return (
     <Layout title={`Σύνολο δεδομένων - ${item.title}`}>

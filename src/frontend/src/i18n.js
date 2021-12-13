@@ -27,7 +27,7 @@ const resources = {
       "identifier": "Αναγνωριστικό",
       "issued": "Δημιουργήθηκε",
       "modified": "Τελ. Ενημέρωση",
-      "license": "Αδεια χρήσης δεδομένων",
+      "license": "Άδεια χρήσης δεδομένων",
       "contact_point": "Επικοινωνία",
       "access_level": "Πρόσβαση",
       "accrual_periodicity": "Περιοδικότητα",

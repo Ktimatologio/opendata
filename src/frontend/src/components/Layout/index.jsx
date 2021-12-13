@@ -8,6 +8,7 @@ import config from "../../assets/config.json";
 import links from "../../assets/menu.json";
 import links_en from "../../assets/menu_en.json";
 import CookieConsent from "react-cookie-consent";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function AppTranslate() {
   const { t, i18n } = useTranslation();
@@ -164,11 +165,6 @@ const links_ = {
         "target": "_blank"
       },
       {
-        "label": <Labelpublishers/>,
-        "url": "/publishers",
-        "target": "_blank"
-      },
-      {
         "label": <Labelabout/>,
         "url": "/about"
       },
@@ -201,6 +197,7 @@ const links_ = {
   const footer_crwith = <Footer_crwith/>;
   const footer_opens = <Footer_opens/>;
 
+
 const Layout = ({
   children,
   title,
@@ -217,8 +214,44 @@ const Layout = ({
           "lang": "en"
         }}
       />
+      <div id="top-box">
+        <div class="container">
+          <div class="row">
+            <div class="col-xs-6 col-sm-4 logo-container">
+              <img src="/frontend/src/theme/images/mindigital-white.svg" alt="Min Digital" />
+            </div>
+            <div class="col-xs-6 col-sm-4"></div>
+            <div class="col-xs-6 col-sm-2 social-header-container">
+              <div class="social-header-icons">
+                <div class="icon social-header-icon">
+                  <a title="facebook" target="_blank" href="https://www.facebook.com/ktimatologiogr">
+                    <FontAwesomeIcon icon={["fab", "facebook"]} />
+                  </a>
+                </div>
+                <div class="icon social-header-icon">
+                  <a title="linkedin" target="_blank" href="https://www.linkedin.com/company/ktimatologiogr/">
+                    <FontAwesomeIcon icon={["fab", "linkedin"]} />
+                  </a>
+                </div>
+                <div class="icon social-header-icon">
+                  <a title="twitter" target="_blank" href="https://twitter.com/ktimatologiogr">
+                    <FontAwesomeIcon icon={["fab", "twitter"]} />
+                  </a>
+                </div>
+                <div class="icon social-header-icon">
+                  <a title="youtube" target="_blank" href="https://www.youtube.com/channel/UCdwE-4eBhxQe5auL7aRjtkw">
+                    <FontAwesomeIcon icon={["fab", "youtube"]} />
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-6 col-sm-2 lang-menu-container">
+              <AppTranslate/>
+            </div>
+          </div>
+        </div>
+      </div>
       <Header site={<Sitename/>} slogan={<Siteslogan/>} customClasses={config.container} />
-      <AppTranslate/>
       <NavBar
         navItems={links_.main.map(item => (
           <Link activeClassName="active" to={item.url}>

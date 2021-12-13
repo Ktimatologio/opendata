@@ -39,8 +39,8 @@ const About = ({ path }) => (
                 </div>
                 <div className="col-md-3 col-sm-12">
                     <Announcement variation="info" heading="">
-                    <p><a href="/project">Το έργο</a></p>
-                    <p><a href="/opendata">Σχετικά</a></p>
+                    <p><a href="https://www.ktimatologio.gr/photo/medium/202012/zz2moq1607000881211.pdf" target="_blank">Απόφαση του ΔΣ του Ελληνικού Κτηματολογίου για την διάθεση Ανοιχτών Δεδομένων</a></p>
+                    <p><a href="https://www.ktimatologio.gr/photo/medium/202012/hkq36j1607001500322.XLSX" target="_blank">Πίνακας Ανοιχτών Δεδομένων του Ελληνικού Κτηματολογίου</a></p>
                     </Announcement>
                 </div>
             </div>
