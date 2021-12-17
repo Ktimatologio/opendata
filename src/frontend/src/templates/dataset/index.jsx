@@ -390,7 +390,50 @@ const Dataset = ({id, location}) => {
   }
   if ("license" in item && item.license) {
     labelsT3.license = { label: <License/> };
-    valuesT3.license = `<a href="${item.license}">Άδεια</a>`;
+    // valuesT3.license = `<a href="${item.license}">Άδεια</a>`;
+    var item_licence = item.license;
+    if (item_licence === "https://creativecommons.org/licenses/by/4.0/") {
+      valuesT3.license =  `<a href="${item.license}" target="_blank">Creative Commons Attribution</a>`;
+    }
+    else if (item_licence === "https://creativecommons.org/licenses/by-sa/4.0/") {
+      valuesT3.license =  `<a href="${item.license}" target="_blank">Creative Commons Attribution Share-Alike</a>`;
+    }
+    else if (item_licence === "https://creativecommons.org/publicdomain/zero/1.0/") {
+      valuesT3.license =  `<a href="${item.license}" target="_blank">Creative Commons CCZero</a>`;
+    }
+    else if (item_licence === "https://creativecommons.org/licenses/by-nc/2.5/") {
+      valuesT3.license =  `<a href="${item.license}" target="_blank">Creative Commons Non-Commercial (2.5)</a>`;
+    }
+    else if (item_licence === "https://creativecommons.org/licenses/by-nc-nd/4.0/") {
+      valuesT3.license =  `<a href="${item.license}" target="_blank">Attribution NonCommercial NoDerivatives 4.0 International</a>`;
+    }
+    else if (item_licence === "https://www.gnu.org/licenses/fdl.html") {
+      valuesT3.license =  `<a href="${item.license}" target="_blank">GNU Free Documentation License</a>`;
+    }
+    else if (item_licence === "https://opendatacommons.org/licenses/by/1.0/") {
+      valuesT3.license =  `<a href="${item.license}" target="_blank">Open Data Commons Attribution License</a>`;
+    }
+    else if (item_licence === "https://opendatacommons.org/licenses/odbl/1.0/") {
+      valuesT3.license =  `<a href="${item.license}" target="_blank">Open Data Commons Open Database License (ODbL)</a>`;
+    }
+    else if (item_licence === "http://opendefinition.org/licenses/odc-pddl/") {
+      valuesT3.license =  `<a href="${item.license}" target="_blank">Open Data Commons Public Domain Dedication and Licence (PDDL)</a>`;
+    }
+    else if (item_licence === "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/2/") {
+      valuesT3.license =  `<a href="${item.license}" target="_blank">UK Open Government Licence (OGL)</a>`;
+    }
+    else if (item_licence === "https://www.ktimanet.gr/geoportal/misc/Terms_of_use.htm") {
+      valuesT3.license =  `<a href="${item.license}" target="_blank">Άδεια χρήσης για δεδομένα και υπηρεσίες κατά INSPIRE</a>`;
+    }
+    else if (item_licence === "https://www.ktimanet.gr/geoportal/misc/Terms_of_use.htm/") {
+      valuesT3.license =  `<a href="${item.license}" target="_blank">Άδεια χρήσης για δεδομένα και υπηρεσίες κατά INSPIRE</a>`;
+    }
+    else if (item_licence === "select_or_other") {
+      valuesT3.license =  `<a href="${item.license}" target="_blank">${item.license}</a>`;
+    }
+    else {
+      valuesT3.license =  `<a href="${item.license}" target="_blank">${item.license}</a>`;
+    }
   }
   if ("contactPoint" in item && item.contactPoint && item.contactPoint.fn) {
     labelsT3.contact = { label: <Contactpoint/> };

@@ -20,17 +20,19 @@ if($_GET["stat"] == 1) {
   if (!file_exists('../sites/default/files/stats/geotemaxia_ota/'.$year.'')) {
     mkdir('../sites/default/files/stats/geotemaxia_ota/'.$year.'', 0777, true);
   }
-  $fp = fopen('../sites/default/files/stats/geotemaxia_ota/'.$year.'/geotemaxia_ota_'.$date.'.csv', 'w'); 
-  foreach($array as $key => $str)
-  {
-    $array[$key] = explode('~', $str);
-    if(isset($array[$key][1])) {
-      $array[$key] = array("κωδικός ΟΤΑ" => $array[$key][0], "τιμή" => $array[$key][1]);
-      fputcsv($fp, $array[$key]); 
-    }
+  if (!file_exists('../sites/default/files/stats/geotemaxia_ota/'.$year.'/geotemaxia_ota_'.$date.'.csv')) {
+    $fp = fopen('../sites/default/files/stats/geotemaxia_ota/'.$year.'/geotemaxia_ota_'.$date.'.csv', 'w'); 
+    foreach($array as $key => $str)
+    {
+      $array[$key] = explode('~', $str);
+      if(isset($array[$key][1])) {
+        $array[$key] = array("κωδικός ΟΤΑ" => $array[$key][0], "τιμή" => $array[$key][1]);
+        fputcsv($fp, $array[$key]); 
+      }
 
+    }
+    fclose($fp);
   }
-  fclose($fp);
   header('Location: ../sites/default/files/stats/geotemaxia_ota/'.$year.'/geotemaxia_ota_'.$date.'.csv');
   exit;
   
@@ -40,18 +42,20 @@ elseif($_GET["stat"] == 2) {
   if (!file_exists('../sites/default/files/stats/ktimatografisi_ota/'.$year.'')) {
     mkdir('../sites/default/files/stats/ktimatografisi_ota/'.$year.'', 0777, true);
   }
-  $fp = fopen('../sites/default/files/stats/ktimatografisi_ota_'.$date.'.csv', 'w'); 
-  foreach($array as $key => $str)
-  {
-    $array[$key] = explode('~', $str);
-    if(isset($array[$key][1])) {
-      $array[$key] = array("κωδικός ΟΤΑ" => $array[$key][0], "τιμή" => $array[$key][1], "Λεκτικό" => $array[$key][2]);
-      fputcsv($fp, $array[$key]);
-    }
+  if (!file_exists('../sites/default/files/stats/ktimatografisi_ota/'.$year.'/ktimatografisi_ota_'.$date.'.csv')) {
+    $fp = fopen('../sites/default/files/stats/ktimatografisi_ota/'.$year.'/ktimatografisi_ota_'.$date.'.csv', 'w'); 
+    foreach($array as $key => $str)
+    {
+      $array[$key] = explode('~', $str);
+      if(isset($array[$key][1])) {
+        $array[$key] = array("κωδικός ΟΤΑ" => $array[$key][0], "τιμή" => $array[$key][1], "Λεκτικό" => $array[$key][2]);
+        fputcsv($fp, $array[$key]);
+      }
 
+    }
+    fclose($fp);
   }
-  fclose($fp);
-  header('Location: ../sites/default/files/stats/ktimatografisi_ota_'.$date.'.csv');
+  header('Location: ../sites/default/files/stats/ktimatografisi_ota/'.$year.'/ktimatografisi_ota_'.$date.'.csv');
   exit;
 }
 elseif($_GET["stat"] == 3) {
@@ -59,18 +63,20 @@ elseif($_GET["stat"] == 3) {
   if (!file_exists('../sites/default/files/stats/or_idioktisies_ota/'.$year.'')) {
     mkdir('../sites/default/files/stats/or_idioktisies_ota/'.$year.'', 0777, true);
   }
-  $fp = fopen('../sites/default/files/stats/or_idioktisies_ota_'.$date.'.csv', 'w'); 
-  foreach($array as $key => $str)
-  {
-    $array[$key] = explode('~', $str);
-    if(isset($array[$key][1])) {
-      $array[$key] = array("κωδικός ΟΤΑ" => $array[$key][0], "τιμή" => $array[$key][1], "Λεκτικό" => $array[$key][2]);
-      fputcsv($fp, $array[$key]);
-    }
+  if (!file_exists('../sites/default/files/stats/or_idioktisies_ota/'.$year.'/or_idioktisies_ota_'.$date.'.csv')) {
+    $fp = fopen('../sites/default/files/stats/or_idioktisies_ota/'.$year.'/or_idioktisies_ota_'.$date.'.csv', 'w'); 
+    foreach($array as $key => $str)
+    {
+      $array[$key] = explode('~', $str);
+      if(isset($array[$key][1])) {
+        $array[$key] = array("κωδικός ΟΤΑ" => $array[$key][0], "τιμή" => $array[$key][1], "Λεκτικό" => $array[$key][2]);
+        fputcsv($fp, $array[$key]);
+      }
 
+    }
+    fclose($fp);
   }
-  fclose($fp);
-  header('Location: ../sites/default/files/stats/or_idioktisies_ota_'.$date.'.csv');
+  header('Location: ../sites/default/files/stats/or_idioktisies_ota/'.$year.'/or_idioktisies_ota_'.$date.'.csv');
   exit;
 }
 elseif($_GET["stat"] == 4) {
@@ -78,18 +84,20 @@ elseif($_GET["stat"] == 4) {
   if (!file_exists('../sites/default/files/stats/idioktites_ota/'.$year.'')) {
     mkdir('../sites/default/files/stats/idioktites_ota/'.$year.'', 0777, true);
   }
-  $fp = fopen('../sites/default/files/stats/idioktites_ota_'.$date.'.csv', 'w'); 
-  foreach($array as $key => $str)
-  {
-    $array[$key] = explode('~', $str);
-    if(isset($array[$key][1])) {
-      $array[$key] = array("κωδικός ΟΤΑ" => $array[$key][0], "τιμή" => $array[$key][1], "Λεκτικό" => $array[$key][2]);
-      fputcsv($fp, $array[$key]);
-    }
+  if (!file_exists('../sites/default/files/stats/idioktites_ota/'.$year.'/idioktites_ota_'.$date.'.csv')) {
+    $fp = fopen('../sites/default/files/stats/idioktites_ota/'.$year.'/idioktites_ota_'.$date.'.csv', 'w'); 
+    foreach($array as $key => $str)
+    {
+      $array[$key] = explode('~', $str);
+      if(isset($array[$key][1])) {
+        $array[$key] = array("κωδικός ΟΤΑ" => $array[$key][0], "τιμή" => $array[$key][1], "Λεκτικό" => $array[$key][2]);
+        fputcsv($fp, $array[$key]);
+      }
 
+    }
+    fclose($fp);
   }
-  fclose($fp);
-  header('Location: ../sites/default/files/stats/idioktites_ota_'.$date.'.csv');
+  header('Location: ../sites/default/files/stats/idioktites_ota/'.$year.'/idioktites_ota_'.$date.'.csv');
   exit;
 }
 elseif($_GET["stat"] == 5) {
@@ -97,18 +105,20 @@ elseif($_GET["stat"] == 5) {
   if (!file_exists('../sites/default/files/stats/agorapolisies_ota/'.$year.'')) {
     mkdir('../sites/default/files/stats/agorapolisies_ota/'.$year.'', 0777, true);
   }
-  $fp = fopen('../sites/default/files/stats/agorapolisies_ota_'.$date.'.csv', 'w'); 
-  foreach($array as $key => $str)
-  {
-    $array[$key] = explode('~', $str);
-    if(isset($array[$key][1])) {
-      $array[$key] = array("κωδικός ΟΤΑ" => $array[$key][0], "τιμή" => $array[$key][1], "Λεκτικό" => $array[$key][2]);
-      fputcsv($fp, $array[$key]);
-    }
+  if (!file_exists('../sites/default/files/stats/agorapolisies_ota/'.$year.'/agorapolisies_ota_'.$date.'.csv')) {
+    $fp = fopen('../sites/default/files/stats/agorapolisies_ota/'.$year.'/agorapolisies_ota_'.$date.'.csv', 'w'); 
+    foreach($array as $key => $str)
+    {
+      $array[$key] = explode('~', $str);
+      if(isset($array[$key][1])) {
+        $array[$key] = array("κωδικός ΟΤΑ" => $array[$key][0], "τιμή" => $array[$key][1], "Λεκτικό" => $array[$key][2]);
+        fputcsv($fp, $array[$key]);
+      }
 
+    }
+    fclose($fp);
   }
-  fclose($fp);
-  header('Location: ../sites/default/files/stats/agorapolisies_ota_'.$date.'.csv');
+  header('Location: ../sites/default/files/stats/agorapolisies_ota/'.$year.'/agorapolisies_ota_'.$date.'.csv');
   exit;
 }
 elseif($_GET["stat"] == 6) {
@@ -116,18 +126,20 @@ elseif($_GET["stat"] == 6) {
   if (!file_exists('../sites/default/files/stats/ypothikes_ota/'.$year.'')) {
     mkdir('../sites/default/files/stats/ypothikes_ota/'.$year.'', 0777, true);
   }
-  $fp = fopen('../sites/default/files/stats/ypothikes_ota_'.$date.'.csv', 'w'); 
-  foreach($array as $key => $str)
-  {
-    $array[$key] = explode('~', $str);
-    if(isset($array[$key][1])) {
-      $array[$key] = array("κωδικός ΟΤΑ" => $array[$key][0], "τιμή" => $array[$key][1], "Λεκτικό" => $array[$key][2]);
-      fputcsv($fp, $array[$key]);
-    }
+  if (!file_exists('../sites/default/files/stats/ypothikes_ota/'.$year.'/ypothikes_ota_'.$date.'.csv')) {
+    $fp = fopen('../sites/default/files/stats/ypothikes_ota/'.$year.'/ypothikes_ota_'.$date.'.csv', 'w'); 
+    foreach($array as $key => $str)
+    {
+      $array[$key] = explode('~', $str);
+      if(isset($array[$key][1])) {
+        $array[$key] = array("κωδικός ΟΤΑ" => $array[$key][0], "τιμή" => $array[$key][1], "Λεκτικό" => $array[$key][2]);
+        fputcsv($fp, $array[$key]);
+      }
 
+    }
+    fclose($fp);
   }
-  fclose($fp);
-  header('Location: ../sites/default/files/stats/ypothikes_ota_'.$date.'.csv');
+  header('Location: ../sites/default/files/stats/ypothikes_ota/'.$year.'/ypothikes_ota_'.$date.'.csv');
   exit;
 }
 elseif($_GET["stat"] == 7) {
@@ -135,18 +147,20 @@ elseif($_GET["stat"] == 7) {
   if (!file_exists('../sites/default/files/stats/katasxeseis_ota/'.$year.'')) {
     mkdir('../sites/default/files/stats/katasxeseis_ota/'.$year.'', 0777, true);
   }
-  $fp = fopen('../sites/default/files/stats/katasxeseis_ota_'.$date.'.csv', 'w'); 
-  foreach($array as $key => $str)
-  {
-    $array[$key] = explode('~', $str);
-    if(isset($array[$key][1])) {
-      $array[$key] = array("κωδικός ΟΤΑ" => $array[$key][0], "τιμή" => $array[$key][1], "Λεκτικό" => $array[$key][2]);
-      fputcsv($fp, $array[$key]);
-    }
+  if (!file_exists('../sites/default/files/stats/katasxeseis_ota/'.$year.'/katasxeseis_ota_'.$date.'.csv')) {
+    $fp = fopen('../sites/default/files/stats/katasxeseis_ota/'.$year.'/katasxeseis_ota_'.$date.'.csv', 'w'); 
+    foreach($array as $key => $str)
+    {
+      $array[$key] = explode('~', $str);
+      if(isset($array[$key][1])) {
+        $array[$key] = array("κωδικός ΟΤΑ" => $array[$key][0], "τιμή" => $array[$key][1], "Λεκτικό" => $array[$key][2]);
+        fputcsv($fp, $array[$key]);
+      }
 
+    }
+    fclose($fp);
   }
-  fclose($fp);
-  header('Location: ../sites/default/files/stats/katasxeseis_ota_'.$date.'.csv');
+  header('Location: ../sites/default/files/stats/katasxeseis_ota/'.$year.'/katasxeseis_ota_'.$date.'.csv');
   exit;
 }
 elseif ($_GET["stat"] == 8) {
@@ -154,18 +168,20 @@ elseif ($_GET["stat"] == 8) {
   if (!file_exists('../sites/default/files/stats/emvado_orizontion_ota/'.$year.'')) {
     mkdir('../sites/default/files/stats/emvado_orizontion_ota/'.$year.'', 0777, true);
   }
-  $fp = fopen('../sites/default/files/stats/emvado_orizontion_ota_'.$date.'.csv', 'w'); 
-  foreach($array as $key => $str)
-  {
-    $array[$key] = explode('~', $str);
-    if(isset($array[$key][1])) {
-      $array[$key] = array("κωδικός ΟΤΑ" => $array[$key][0], "τιμή" => $array[$key][1], "Λεκτικό" => $array[$key][2]);
-      fputcsv($fp, $array[$key]);
-    }
+  if (!file_exists('../sites/default/files/stats/emvado_orizontion_ota/'.$year.'/emvado_orizontion_ota_'.$date.'.csv')) {
+    $fp = fopen('../sites/default/files/stats/emvado_orizontion_ota/'.$year.'/emvado_orizontion_ota_'.$date.'.csv', 'w'); 
+    foreach($array as $key => $str)
+    {
+      $array[$key] = explode('~', $str);
+      if(isset($array[$key][1])) {
+        $array[$key] = array("κωδικός ΟΤΑ" => $array[$key][0], "τιμή" => $array[$key][1], "Λεκτικό" => $array[$key][2]);
+        fputcsv($fp, $array[$key]);
+      }
 
+    }
+    fclose($fp);
   }
-  fclose($fp);
-  header('Location: ../sites/default/files/stats/emvado_orizontion_ota_'.$date.'.csv');
+  header('Location: ../sites/default/files/stats/emvado_orizontion_ota/'.$year.'/emvado_orizontion_ota_'.$date.'.csv');
   exit;
 }
 else {
