@@ -8,11 +8,11 @@ if($_GET["stat"] == 1) {
   $zip = new ZipArchive;
   if ($zip->open('../sites/default/files/stats/geotemaxia_ota/'.$year.'/geotemaxia_ota-'.$year.'.zip', ZipArchive::CREATE) === TRUE)
   {
-    
+
       $path = "../sites/default/files/stats/geotemaxia_ota/".$year."/geotemaxia_ota_*.csv";
       $filenames = glob($path);
       foreach($filenames as $file) {
-        $zip->addFile($file);
+        $zip->addFile($file, "geotemaxia_ota/".$year."/".basename($file));
       }
       $zip->close();
 
@@ -25,11 +25,11 @@ elseif($_GET["stat"] == 2) {
   $zip = new ZipArchive;
   if ($zip->open('../sites/default/files/stats/ktimatografisi_ota/'.$year.'/ktimatografisi_ota-'.$year.'.zip', ZipArchive::CREATE) === TRUE)
   {
-    
+
       $path = "../sites/default/files/stats/ktimatografisi_ota/".$year."/ktimatografisi_ota_*.csv";
       $filenames = glob($path);
       foreach($filenames as $file) {
-        $zip->addFile($file);
+        $zip->addFile($file, "ktimatografisi_ota/".$year."/".basename($file));
       }
       $zip->close();
 
@@ -42,11 +42,11 @@ elseif($_GET["stat"] == 3) {
   $zip = new ZipArchive;
   if ($zip->open('../sites/default/files/stats/or_idioktisies_ota/'.$year.'/or_idioktisies_ota-'.$year.'.zip', ZipArchive::CREATE) === TRUE)
   {
-    
+
       $path = "../sites/default/files/stats/or_idioktisies_ota/".$year."/or_idioktisies_ota_*.csv";
       $filenames = glob($path);
       foreach($filenames as $file) {
-        $zip->addFile($file);
+        $zip->addFile($file, "or_idioktisies_ota/".$year."/".basename($file));
       }
       $zip->close();
 
@@ -59,11 +59,11 @@ elseif($_GET["stat"] == 4) {
   $zip = new ZipArchive;
   if ($zip->open('../sites/default/files/stats/idioktites_ota/'.$year.'/idioktites_ota-'.$year.'.zip', ZipArchive::CREATE) === TRUE)
   {
-    
+
       $path = "../sites/default/files/stats/idioktites_ota/".$year."/idioktites_ota_*.csv";
       $filenames = glob($path);
       foreach($filenames as $file) {
-        $zip->addFile($file);
+        $zip->addFile($file, "idioktites_ota/".$year."/".basename($file));
       }
       $zip->close();
 
@@ -76,11 +76,11 @@ elseif($_GET["stat"] == 5) {
   $zip = new ZipArchive;
   if ($zip->open('../sites/default/files/stats/agorapolisies_ota/'.$year.'/agorapolisies_ota-'.$year.'.zip', ZipArchive::CREATE) === TRUE)
   {
-    
+
       $path = "../sites/default/files/stats/agorapolisies_ota/".$year."/agorapolisies_ota_*.csv";
       $filenames = glob($path);
       foreach($filenames as $file) {
-        $zip->addFile($file);
+        $zip->addFile($file, "agorapolisies_ota/".$year."/".basename($file));
       }
       $zip->close();
 
@@ -93,11 +93,11 @@ elseif($_GET["stat"] == 6) {
   $zip = new ZipArchive;
   if ($zip->open('../sites/default/files/stats/ypothikes_ota/'.$year.'/ypothikes_ota-'.$year.'.zip', ZipArchive::CREATE) === TRUE)
   {
-    
+
       $path = "../sites/default/files/stats/ypothikes_ota/".$year."/ypothikes_ota_*.csv";
       $filenames = glob($path);
       foreach($filenames as $file) {
-        $zip->addFile($file);
+        $zip->addFile($file, "ypothikes_ota/".$year."/".basename($file));
       }
       $zip->close();
 
@@ -110,11 +110,11 @@ elseif($_GET["stat"] == 7) {
   $zip = new ZipArchive;
   if ($zip->open('../sites/default/files/stats/katasxeseis_ota/'.$year.'/katasxeseis_ota-'.$year.'.zip', ZipArchive::CREATE) === TRUE)
   {
-    
+
       $path = "../sites/default/files/stats/katasxeseis_ota/".$year."/katasxeseis_ota_*.csv";
       $filenames = glob($path);
       foreach($filenames as $file) {
-        $zip->addFile($file);
+        $zip->addFile($file, "katasxeseis_ota/".$year."/".basename($file));
       }
       $zip->close();
 
@@ -127,11 +127,11 @@ elseif ($_GET["stat"] == 8) {
   $zip = new ZipArchive;
   if ($zip->open('../sites/default/files/stats/emvado_orizontion_ota/'.$year.'/emvado_orizontion_ota-'.$year.'.zip', ZipArchive::CREATE) === TRUE)
   {
-    
+
       $path = "../sites/default/files/stats/emvado_orizontion_ota/".$year."/emvado_orizontion_ota*.csv";
       $filenames = glob($path);
       foreach($filenames as $file) {
-        $zip->addFile($file);
+        $zip->addFile($file, "emvado_orizontion_ota/".$year."/".basename($file));
       }
       $zip->close();
 
