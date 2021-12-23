@@ -5,10 +5,10 @@ function zipCSV($dataset, $year) {
 	//exit;
 	$zip = new ZipArchive;
 	if ($zip->open('../sites/default/files/stats/' . $dataset . '/' . $year . '/' . $dataset . '-' . $year . '.zip', ZipArchive::CREATE) === TRUE){
-	$path = '../sites/default/files/stats/' . $dataset . '/'.$year.'/' . $dataset . '_*.csv';
+	$path = '../sites/default/files/stats/' . $dataset . '/' . $year . '/' . $dataset . '_*.csv';
 	$filenames = glob($path);
 	foreach($filenames as $file) {
-		$zip->addFile($file, $dataset . $year . '/' . basename($file));
+		$zip->addFile($file, $dataset . '-' . $year . '/' . basename($file));
 	}
 	$zip->close();
 
