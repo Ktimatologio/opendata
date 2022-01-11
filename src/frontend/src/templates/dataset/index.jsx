@@ -377,14 +377,29 @@ const Dataset = ({id, location}) => {
     labelsT3.issued = { label: <Issued/> };
     // valuesT3.issued = item.issued;
     var issued = item.issued;
-    var newissued = issued.replace("00:00:00 Europe/Athens", "");
+    var newissued = issued.substring(0, 10);
+    // if (issued.includes("00:00:00 Europe/Athens", "")) { 
+    //   var newissued = issued.replace("00:00:00 Europe/Athens", "");
+    // }
+    // else if (issued.includes("03:00:00 Europe/Athens", "")) { 
+    //   var newissued = issued.replace("03:00:00 Europe/Athens", "");
+    // }
     valuesT3.issued = newissued;
   }
   if ("modified" in item && item.modified) {
     labelsT3.modified = { label: <Modified/> };
     // valuesT3.modified = Moment(item.modified).format('DD-MM-YYYY');
     var modified = item.modified;
-    var newmodified = modified.replace("00:00:00 Europe/Athens", "");
+    // if (modified.includes("00:00:00 Europe/Athens", "")) { 
+    //   var newmodified = modified.replace("00:00:00 Europe/Athens", "");
+    // }
+    // else if (modified.includes("03:00:00 Europe/Athens", "")) { 
+    //   var newmodified = modified.replace("03:00:00 Europe/Athens", "");
+    // }
+    // else {
+    //   var newmodified = modified.substring(0, 10);
+    // }
+    var newmodified = modified.substring(0, 10);
     // valuesT3.modified = item.modified;
     valuesT3.modified = newmodified;
   }
