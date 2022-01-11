@@ -1,8 +1,8 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
     "$id": "https://getdkan.com/api/datastore.query.json",
-    "title": "Query",
-    "description": "Schema for DKAN database queries",
+    "title": "Datastore Query",
+    "description": "Schema for DKAN datastore queries",
     "type": "object",
     "properties": {
         "resources": {
@@ -72,11 +72,19 @@
                 "required": ["resource", "condition"]
             }
         },
+        "groupings": {
+            "type": "array",
+            "description": "Properties or aliases to group results by.",
+            "items": {
+                "anyOf": [
+                    { "$ref": "#/definitions/resource" },
+                    { "$ref": "#/definitions/resourceProperty" }
+                ]
+            }
+        },
         "limit": {
             "type": "integer",
-            "maximum": 500,
-            "description": "Limit for maximum number of records returned. Pass zero for no limit (may be restricted by user permissions).",
-            "default": 500
+            "description": "Limit for maximum number of records returned. Pass zero for no limit (may be restricted by user permissions)."
         },
         "offset": {
             "type": "integer",
@@ -107,6 +115,17 @@
             "description": "Return results as an array of keyed objects, with the column machine names as keys. If false, results will be an array of simple arrays of values.",
             "type": "boolean",
             "default": true
+        },
+        "format" : {
+            "type": "string",
+            "description": "Format to return data in. Default is JSON, can be set to CSV.",
+            "enum": ["csv", "json"],
+            "default": "json"
+        },
+        "rowIds": {
+            "description": "Flag to include the result_number column in output. Default is FALSE",
+            "type": "boolean",
+            "default": false
         }
     },
     "definitions": {
@@ -184,20 +203,27 @@
         "expression": {
             "type": "object",
             "title": "Expression",
-            "description": "Arithmetic or other expression performed on one or more properties. See operator property enum for currently supported expressions, and see https://dev.mysql.com/doc/refman/5.7/en/numeric-functions.html.",
+            "description": "Arithmetic or aggregate expression performed on one or more properties.",
             "properties": {
                 "operator": {
                     "type": "string",
+                    "description": "Expression operator. Note that performing expressions on text or other non-numeric data types my yield unexpected results.",
                     "enum": [
                         "+",
                         "-",
                         "*",
                         "/",
-                        "%"
+                        "%",
+                        "sum",
+                        "count",
+                        "avg",
+                        "max",
+                        "min"
                     ]
                 },
                 "operands": {
                     "type": "array",
+                    "description": "Arithmetic operators will require two operands, aggregate operators should take only one. Do not combine arithmetic and aggregate operators in a single query.",
                     "items": {
                         "anyOf": [
                             {
@@ -230,12 +256,6 @@
                     "enum": ["asc", "desc"]
                 }
             }
-        },
-        "format" : {
-            "type": "string",
-            "description": "Format to return data in. Default is JSON, can be set to CSV.",
-            "enum": ["csv, json"],
-            "default": "json"
         }
     }
 }

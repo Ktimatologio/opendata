@@ -969,6 +969,7 @@ class Index extends ConfigEntityBase implements IndexInterface {
     $event = new IndexingItemsEvent($this, $items);
     \Drupal::getContainer()->get('event_dispatcher')
       ->dispatch(SearchApiEvents::INDEXING_ITEMS, $event);
+    $items = $event->getItems();
     foreach ($items as $item) {
       // This will cache the extracted fields so processors, etc., can retrieve
       // them directly.
@@ -1227,6 +1228,7 @@ class Index extends ConfigEntityBase implements IndexInterface {
     $this->options += [
       'cron_limit' => $config->get('default_cron_limit'),
       'index_directly' => TRUE,
+      'track_changes_in_references' => TRUE,
     ];
   }
 
@@ -1269,6 +1271,7 @@ class Index extends ConfigEntityBase implements IndexInterface {
     $this->options += [
       'cron_limit' => $config->get('default_cron_limit'),
       'index_directly' => TRUE,
+      'track_changes_in_references' => TRUE,
     ];
 
     // Reset the static cache for getPropertyDefinitions() to make sure we don't

@@ -115,8 +115,10 @@ class Tokenizer extends FieldsProcessorPluginBase {
     parent::validateConfigurationForm($form, $form_state);
 
     foreach (['spaces', 'ignored'] as $field) {
-      $field_value = str_replace('/', '\/', trim($form_state->getValues()[$field]));
-      if ($field_value !== '' && @preg_match('/[' . $field_value . ']+/u', '') === FALSE) {
+      $field_value = $form_state->getValue($field, '');
+      $field_value = str_replace('/', '\/', trim($field_value));
+      if ($field_value !== ''
+          && @preg_match('/[' . $field_value . ']+/u', '') === FALSE) {
         $form_state->setError($form[$field], $form[$field]['#title'] . ': ' . $this->t('The entered text is no valid PCRE character class.'));
       }
     }
@@ -319,21 +321,18 @@ class Tokenizer extends FieldsProcessorPluginBase {
    * {@inheritdoc}
    */
   protected function process(&$value) {
-    // We don't process integers, NULL values or the like.
-    if (is_string($value)) {
-      $this->prepare();
-      $value = trim($this->simplifyText($value));
+    $this->prepare();
+    $value = trim($this->simplifyText($value));
 
-      $min = $this->configuration['minimum_word_size'];
-      if ($min > 1) {
-        $words = explode(' ', $value);
-        foreach ($words as $i => $word) {
-          if (mb_strlen($word) < $min) {
-            unset($words[$i]);
-          }
+    $min = $this->configuration['minimum_word_size'];
+    if ($min > 1) {
+      $words = explode(' ', $value);
+      foreach ($words as $i => $word) {
+        if (mb_strlen($word) < $min) {
+          unset($words[$i]);
         }
-        $value = implode(' ', $words);
       }
+      $value = implode(' ', $words);
     }
   }
 

@@ -3,21 +3,30 @@ services:
     class: \Drupal\metastore\Service
     arguments:
       - '@dkan.metastore.schema_retriever'
-      - '@dkan.metastore.sae_factory'
       - '@dkan.metastore.storage'
+      - '@dkan.metastore.valid_metadata'
 
-  dkan.metastore.sae_factory:
-    class: \Drupal\metastore\Factory\Sae
+  dkan.metastore.lifecycle:
+    class: \Drupal\metastore\LifeCycle\LifeCycle
     arguments:
-      - '@dkan.metastore.schema_retriever'
+      - '@dkan.metastore.referencer'
+      - '@dkan.metastore.dereferencer'
+      - '@dkan.metastore.orphan_checker'
+      - '@dkan.metastore.resource_mapper'
+      - '@date.formatter'
       - '@dkan.metastore.storage'
-
+      - '@queue'
   dkan.metastore.schema_retriever:
     class: \Drupal\metastore\SchemaRetriever
     arguments:
-      - '@app.root'
+      - '%app.root%'
       - '@extension.list.module'
     shared: false
+
+  dkan.metastore.schema_properties_helper:
+    class: \Drupal\metastore\SchemaPropertiesHelper
+    arguments:
+      - '@dkan.metastore.schema_retriever'
 
   dkan.metastore.storage:
     class: \Drupal\metastore\Storage\DataFactory
@@ -28,7 +37,7 @@ services:
     class: \Drupal\metastore\Reference\Referencer
     arguments:
       - '@config.factory'
-      - '@dkan.common.node_storage'
+      - '@dkan.metastore.storage'
     calls:
       - [setLoggerFactory, ['@logger.factory']]
 
@@ -36,7 +45,7 @@ services:
     class: \Drupal\metastore\Reference\Dereferencer
     arguments:
       - '@config.factory'
-      - '@dkan.common.node_storage'
+      - '@dkan.metastore.storage'
     calls:
       - [setLoggerFactory, ['@logger.factory']]
 
@@ -56,3 +65,41 @@ services:
     class: \Drupal\metastore\Storage\ResourceMapperDatabaseTable
     arguments:
       - '@database'
+
+  dkan.metastore.event_subscriber:
+    class: \Drupal\metastore\EventSubscriber\MetastoreSubscriber
+    arguments:
+      - '@logger.factory'
+      - '@dkan.metastore.service'
+      - '@dkan.metastore.resource_mapper'
+    tags:
+      - { name: event_subscriber }
+
+  dkan.metastore.valid_metadata:
+    class: \Drupal\metastore\ValidMetadataFactory
+    arguments:
+      - '@dkan.metastore.schema_retriever'
+
+  dkan.metastore.metastore_item_factory:
+    class: \Drupal\metastore\NodeWrapper\NodeDataFactory
+    arguments:
+      - '@entity.repository'
+
+  dkan.metastore.dataset_api_docs:
+    class: \Drupal\metastore\DatasetApiDocs
+    arguments:
+      - '@dkan.common.docs_generator'
+      - '@dkan.metastore.service'
+
+  dkan.metastore.api_response:
+    class: \Drupal\metastore\MetastoreApiResponse
+    arguments:
+      - '@dkan.metastore.metastore_item_factory'
+
+  dkan.metastore.reference_lookup:
+    class: \Drupal\metastore\Reference\ReferenceLookup
+    arguments:
+      - '@dkan.metastore.storage'
+      - '@dkan.metastore.metastore_item_factory'
+      - '@cache_tags.invalidator'
+      - '@module_handler'

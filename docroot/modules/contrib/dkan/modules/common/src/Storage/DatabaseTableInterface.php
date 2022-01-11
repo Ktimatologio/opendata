@@ -15,11 +15,19 @@ interface DatabaseTableInterface extends StorageInterface, StorerInterface, Retr
   /**
    * Destroy.
    */
-  public function destroy();
+  public function destruct();
 
   /**
    * Query.
    */
   public function query(Query $query);
+
+  /**
+   * Return the primary key for the table.
+   *
+   * @return string
+   *   Primary key name.
+   */
+  public function primaryKey();
 
 }

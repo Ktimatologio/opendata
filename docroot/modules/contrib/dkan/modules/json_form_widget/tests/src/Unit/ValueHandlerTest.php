@@ -34,7 +34,7 @@ class ValueHandlerTest extends TestCase {
                     "fields" => [
                       0 => [
                         "fields" => [
-                          "name" => "Field name",
+                          "name" => "\$ID:Field name",
                           "title" => "Field title",
                         ],
                       ],
@@ -130,7 +130,73 @@ class ValueHandlerTest extends TestCase {
     $schema = json_decode($this->getObjectSchema());
     $result = $value_handler->handleObjectValues(NULL, "publisher", $schema);
     $this->assertEquals($result, FALSE);
+  }
 
+  public function testFlattenValuesEmptyDistribution() {
+    $value_handler = new ValueHandler();
+
+    // Test object where only the '@type' field is not empty.
+    $shortEmptyDistributionSchema = '{
+      "title": "Distribution",
+      "description": "Description.",
+      "type": "array",
+      "items": {
+        "title": "Project Open Data Distribution",
+        "type": "object",
+        "properties": {
+          "@type": {
+            "title": "Metadata Context",
+            "description": "Test Description.",
+            "default": "dcat:Distribution",
+            "type": "string",
+            "readOnly": true
+          },
+          "title": {
+            "title": "Title",
+            "description": "Human-readable name of the distribution.",
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "title": "Description",
+            "description": "Human-readable description of the distribution.",
+            "type": "string",
+            "minLength": 1
+          },
+          "format": {
+            "title": "Format",
+            "description": "A human-readable description of the file format of a distribution (i.e. csv, pdf, xml, kml, etc.).",
+            "type": "string",
+            "examples": [
+              "csv",
+              "json"
+            ]
+          }
+        }
+      }
+    }';
+    $schema = json_decode($shortEmptyDistributionSchema);
+
+    $formValues = [
+      "distribution" => [
+        "distribution" => [
+          0 => [
+            "distribution" => [
+              "@type" => "dcat:Distribution",
+              'title' => '',
+              'description' => '',
+              'format' => [
+                  'select' => '',
+                  'other' => '',
+              ],
+            ],
+          ],
+        ],
+      ],
+    ];
+
+    $result = $value_handler->flattenValues($formValues, "distribution", $schema);
+    $this->assertEquals([], $result);
   }
 
   /**
@@ -154,8 +220,22 @@ class ValueHandlerTest extends TestCase {
     $formValues = [
       'modified' => $date,
     ];
-    $expected = $date->__toString();
+    $expected = $date->format('c', ['timezone' => 'UTC']);
     $result = $value_handler->handleStringValues($formValues, 'modified');
+    $this->assertEquals($result, $expected);
+
+    // Test date_range.
+    $date = new DrupalDateTime('2020-05-11T15:06:39.000Z');
+    $date2 = new DrupalDateTime('2020-05-15T15:00:00.000Z');
+    $formValues = [
+      'temporal' => [
+        'date_range' => '2020-05-11T15:06:39.000Z/2020-05-15T15:00:00.000Z',
+        'start_date' => $date,
+        'end_date' => $date2,
+      ],
+    ];
+    $expected = '2020-05-11T15:06:39.000Z/2020-05-15T15:00:00.000Z';
+    $result = $value_handler->handleStringValues($formValues, 'temporal');
     $this->assertEquals($result, $expected);
   }
 

@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \Drupal\Tests\migrate\Unit\Plugin\migrate\destination\EntityTestBase
+ * Contains \Drupal\Tests\migrate\Unit\Plugin\migrate\destination\EntityTestBase.
  */
 
 namespace Drupal\Tests\migrate\Unit\Plugin\migrate\destination;
@@ -48,7 +48,7 @@ class EntityTestBase extends UnitTestCase {
     $this->storage = $this->prophesize(EntityStorageInterface::class);
 
     $this->entityType = $this->prophesize(EntityTypeInterface::class);
-    $this->entityType->getPluralLabel()->willReturn('wonkiness');
+    $this->entityType->getPluralLabel()->willReturn('foo');
     $this->storage->getEntityType()->willReturn($this->entityType->reveal());
     $this->storage->getEntityTypeId()->willReturn('foo');
 

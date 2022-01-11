@@ -2,17 +2,16 @@
 
 namespace Drupal\datastore\Service\Factory;
 
-use Contracts\FactoryInterface;
 use Drupal\datastore\Storage\DatabaseTableFactory;
 use Drupal\datastore\Service\Import as Instance;
 use Drupal\common\Storage\JobStoreFactory;
 
 /**
- * Class Import.
+ * Create an importer object for a given resource.
  *
  * @codeCoverageIgnore
  */
-class Import implements FactoryInterface {
+class Import implements ImportFactoryInterface {
   private $jobStoreFactory;
   private $databaseTableFactory;
 

@@ -26,7 +26,7 @@ abstract class FileFieldTestBase extends BrowserTestBase {
   protected static $modules = ['node', 'file', 'file_module_test', 'field_ui'];
 
   /**
-   * An user with administration permissions.
+   * A user with administration permissions.
    *
    * @var \Drupal\user\UserInterface
    */
@@ -74,7 +74,10 @@ abstract class FileFieldTestBase extends BrowserTestBase {
    * Retrieves the fid of the last inserted file.
    */
   public function getLastFileId() {
-    return (int) \Drupal::entityQueryAggregate('file')->aggregate('fid', 'max')->execute()[0]['fid_max'];
+    return (int) \Drupal::entityQueryAggregate('file')
+      ->accessCheck(FALSE)
+      ->aggregate('fid', 'max')
+      ->execute()[0]['fid_max'];
   }
 
   /**
@@ -154,7 +157,7 @@ abstract class FileFieldTestBase extends BrowserTestBase {
       $node->save();
       $node_storage->resetCache([$nid]);
       $node = $node_storage->load($nid);
-      $this->assertNotEqual($nid, $node->getRevisionId(), 'Node revision exists.');
+      $this->assertNotEquals($nid, $node->getRevisionId(), 'Node revision exists.');
     }
     $this->drupalGet("node/$nid/edit");
     $page = $this->getSession()->getPage();
@@ -175,11 +178,11 @@ abstract class FileFieldTestBase extends BrowserTestBase {
       }
       else {
         $page->attachFileToField($name, $file_path);
-        $this->drupalPostForm(NULL, [], t('Upload'));
+        $this->submitForm([], 'Upload');
       }
     }
 
-    $this->drupalPostForm(NULL, $edit, t('Save'));
+    $this->submitForm($edit, 'Save');
 
     return $nid;
   }
@@ -194,8 +197,9 @@ abstract class FileFieldTestBase extends BrowserTestBase {
       'revision' => (string) (int) $new_revision,
     ];
 
-    $this->drupalPostForm('node/' . $nid . '/edit', [], t('Remove'));
-    $this->drupalPostForm(NULL, $edit, t('Save'));
+    $this->drupalGet('node/' . $nid . '/edit');
+    $this->submitForm([], 'Remove');
+    $this->submitForm($edit, 'Save');
   }
 
   /**
@@ -207,8 +211,9 @@ abstract class FileFieldTestBase extends BrowserTestBase {
       'revision' => (string) (int) $new_revision,
     ];
 
-    $this->drupalPostForm('node/' . $nid . '/edit', [], t('Remove'));
-    $this->drupalPostForm(NULL, $edit, t('Save'));
+    $this->drupalGet('node/' . $nid . '/edit');
+    $this->submitForm([], 'Remove');
+    $this->submitForm($edit, 'Save');
   }
 
   /**
@@ -217,8 +222,8 @@ abstract class FileFieldTestBase extends BrowserTestBase {
   public function assertFileEntryExists($file, $message = NULL) {
     $this->container->get('entity_type.manager')->getStorage('file')->resetCache();
     $db_file = File::load($file->id());
-    $message = isset($message) ? $message : new FormattableMarkup('File %file exists in database at the correct path.', ['%file' => $file->getFileUri()]);
-    $this->assertEqual($db_file->getFileUri(), $file->getFileUri(), $message);
+    $message = $message ?? new FormattableMarkup('File %file exists in database at the correct path.', ['%file' => $file->getFileUri()]);
+    $this->assertEquals($file->getFileUri(), $db_file->getFileUri(), $message);
   }
 
   /**
@@ -226,7 +231,7 @@ abstract class FileFieldTestBase extends BrowserTestBase {
    */
   public function assertFileEntryNotExists($file, $message) {
     $this->container->get('entity_type.manager')->getStorage('file')->resetCache();
-    $message = isset($message) ? $message : new FormattableMarkup('File %file exists in database at the correct path.', ['%file' => $file->getFileUri()]);
+    $message = $message ?? new FormattableMarkup('File %file exists in database at the correct path.', ['%file' => $file->getFileUri()]);
     $this->assertNull(File::load($file->id()), $message);
   }
 
@@ -234,7 +239,7 @@ abstract class FileFieldTestBase extends BrowserTestBase {
    * Asserts that a file's status is set to permanent in the database.
    */
   public function assertFileIsPermanent(FileInterface $file, $message = NULL) {
-    $message = isset($message) ? $message : new FormattableMarkup('File %file is permanent.', ['%file' => $file->getFileUri()]);
+    $message = $message ?? new FormattableMarkup('File %file is permanent.', ['%file' => $file->getFileUri()]);
     $this->assertTrue($file->isPermanent(), $message);
   }
 

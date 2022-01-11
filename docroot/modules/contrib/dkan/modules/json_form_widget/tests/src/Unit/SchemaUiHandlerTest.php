@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\json_form_widget\Unit;
 
+use Drupal\Tests\metastore\Unit\ServiceTest;
 use PHPUnit\Framework\TestCase;
 use MockChain\Chain;
 use Drupal\Component\DependencyInjection\Container;
@@ -17,12 +18,23 @@ use Drupal\json_form_widget\WidgetRouter;
 use Drupal\metastore\SchemaRetriever;
 use Drupal\metastore\Service;
 use MockChain\Options;
-use stdClass;
 
 /**
  * Test class for SchemaUiHandlerTest.
  */
 class SchemaUiHandlerTest extends TestCase {
+
+  /**
+   * The ValidMetadataFactory class used for testing.
+   *
+   * @var \Drupal\metastore\ValidMetadataFactory|\PHPUnit\Framework\MockObject\MockObject
+   */
+  protected $validMetadataFactory;
+
+  protected function setUp(): void {
+    parent::setUp();
+    $this->validMetadataFactory = ServiceTest::getValidMetadataFactory($this);
+  }
 
   /**
    * Test.
@@ -88,6 +100,7 @@ class SchemaUiHandlerTest extends TestCase {
         "#type" => "textarea",
         "#title" => "Textarea field",
         "#description" => "Test description",
+        '#description_display' => 'before',
         "#default_value" => NULL,
         "#required" => FALSE,
         "#rows" => 4,
@@ -176,6 +189,36 @@ class SchemaUiHandlerTest extends TestCase {
     $expected['modified']['#default_value'] = $date;
     $this->assertEquals($ui_handler->applySchemaUi($form), $expected);
 
+    // Test date_range.
+    $container_chain->add(SchemaRetriever::class, 'retrieve', '{"temporal":{"ui:options":{"widget":"date_range"}}}');
+    $container = $container_chain->getMock();
+    \Drupal::setContainer($container);
+    $ui_handler = SchemaUiHandler::create($container);
+    $ui_handler->setSchemaUi('dataset');
+    $form = [
+      "temporal" => [
+        "#type" => "textfield",
+        "#title" => "Temporal Date Range",
+        "#default_value" => '2020-05-11T15:06:39.000Z/2020-05-15T15:00:00.000Z',
+        "#required" => FALSE,
+      ],
+    ];
+    $date = new DrupalDateTime('2020-05-11T15:06:39.000Z');
+    $expected = [
+      "temporal" => [
+        "#type" => "date_range",
+        "#title" => "Temporal Date Range",
+        "#default_value" => '2020-05-11T15:06:39.000Z/2020-05-15T15:00:00.000Z',
+        "#required" => FALSE,
+      ],
+    ];
+    $this->assertEquals($ui_handler->applySchemaUi($form), $expected);
+
+    // Test date range without default value.
+    $form['temporal']['#default_value'] = NULL;
+    $expected['temporal']['#default_value'] = '';
+    $this->assertEquals($ui_handler->applySchemaUi($form), $expected);
+
     // Test dkan_uuid field with already existing value.
     $container_chain->add(SchemaRetriever::class, 'retrieve', '{"identifier":{"ui:options":{"widget":"dkan_uuid"}}}');
     $container = $container_chain->getMock();
@@ -258,6 +301,7 @@ class SchemaUiHandlerTest extends TestCase {
         '#type' => 'fieldset',
         '#title' => 'Related documents',
         '#description' => 'Improved description',
+        '#description_display' => 'before',
         '#prefix' => '<div id="references-fieldset-wrapper">',
         '#suffix' => '</div>',
         '#tree' => TRUE,
@@ -332,6 +376,7 @@ class SchemaUiHandlerTest extends TestCase {
             '#type' => 'textfield',
             '#title' => 'Publisher name',
             '#description' => 'Better description',
+            '#description_display' => 'before',
             '#default_value' => 'org:Organization',
             '#required' => TRUE,
           ],
@@ -878,26 +923,21 @@ class SchemaUiHandlerTest extends TestCase {
    * Dummy list of simple metastore results.
    */
   private function getSimpleMetastoreResults() {
-    $options = [];
-    $options[0] = new stdClass();
-    $options[0]->data = "Option 1";
-    $options[1] = new stdClass();
-    $options[1]->data = "Option 2";
-    return $options;
+    return [
+      $this->validMetadataFactory->get(json_encode(['data' => 'Option 1']), 'dataset'),
+      $this->validMetadataFactory->get(json_encode(['data' => 'Option 2']), 'dataset'),
+    ];
+
   }
 
   /**
    * Dummy list of complex metastore results.
    */
   private function getComplexMetastoreResults() {
-    $options = [];
-    $options[0] = new stdClass();
-    $options[0]->data = new stdClass();
-    $options[0]->data->name = "Option 1";
-    $options[1] = new stdClass();
-    $options[1]->data = new stdClass();
-    $options[1]->data->name = "Option 2";
-    return $options;
+    return [
+      $this->validMetadataFactory->get(json_encode(['data' => ['name' => 'Option 1']]), 'dataset'),
+      $this->validMetadataFactory->get(json_encode(['data' => ['name' => 'Option 2']]), 'dataset'),
+    ];
   }
 
 }

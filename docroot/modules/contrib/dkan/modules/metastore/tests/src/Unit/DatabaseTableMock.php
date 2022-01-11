@@ -12,6 +12,10 @@ class DatabaseTableMock implements DatabaseTableInterface {
   private $id = 0;
   private $store = [];
 
+  public function primaryKey() {
+    return 'id';
+  }
+
   /**
    *
    */
@@ -35,10 +39,10 @@ class DatabaseTableMock implements DatabaseTableInterface {
   /**
    *
    */
-  public function destroy() {
-    // TODO: Implement destroy() method.
+  public function destruct() {
+    // TODO: Implement destruct() method.
   }
-
+  
   /**
    *
    */

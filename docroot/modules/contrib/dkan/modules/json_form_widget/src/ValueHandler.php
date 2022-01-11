@@ -35,18 +35,17 @@ class ValueHandler {
    * Flatten values for string properties.
    */
   public function handleStringValues($formValues, $property) {
-    // Handle datetime elements.
     if (isset($formValues[$property]) && $formValues[$property] instanceof DrupalDateTime) {
-      return $formValues[$property]->__toString();
+      return $formValues[$property]->format('c', ['timezone' => 'UTC']);
+    }
+    if (!empty($formValues[$property]) && isset($formValues[$property]['date_range'])) {
+      return $formValues[$property]['date_range'];
     }
     // Handle select_or_other_select.
     if (isset($formValues[$property]['select'])) {
-      return $formValues[$property][0];
+      return isset($formValues[$property][0]) ? $formValues[$property][0] : NULL;
     }
-    if (!empty($formValues[$property])) {
-      return $formValues[$property];
-    }
-    return FALSE;
+    return !empty($formValues[$property]) ? $this->cleanSelectId($formValues[$property]) : FALSE;
   }
 
   /**
@@ -55,6 +54,10 @@ class ValueHandler {
   public function handleObjectValues($formValues, $property, $schema) {
     if (!isset($formValues)) {
       return FALSE;
+    }
+
+    if (isset($formValues['@type'])) {
+      $formValues = $this->processTypeValue($formValues);
     }
 
     $properties = array_keys((array) $schema->properties);
@@ -66,6 +69,48 @@ class ValueHandler {
       }
     }
     return $data;
+  }
+
+  /**
+   * Sets '@type' to null if other fields are empty.
+   *
+   * @param array $formValues
+   *   Form values.
+   *
+   * @return array
+   *   Processed form values.
+   */
+  private function processTypeValue(array $formValues): array {
+    // $formValues without the '@type' key.
+    $formValuesNoType = array_diff_key($formValues, array_flip(['@type']));
+
+    foreach ($formValuesNoType as $value) {
+      // If a single value is not empty - return the original $formValues array.
+      if (!$this->isValueEmpty($value)) {
+        return $formValues;
+      }
+    }
+
+    // All values are empty. '@type' needs to be empty too.
+    return array_merge(['@type' => NULL], $formValuesNoType);
+  }
+
+  /**
+   * Check if a values id empty.
+   *
+   * @param mixed $value
+   *   A form value.
+   *
+   * @return bool
+   *   TRUE if the value is empty, FALSE if it is not.
+   */
+  private function isValueEmpty($value): bool {
+    if (is_scalar($value)) {
+      return empty($value);
+    }
+
+    $value = (array) $value;
+    return empty(array_filter($value));
   }
 
   /**
@@ -91,13 +136,29 @@ class ValueHandler {
     $data = [];
     if (is_array($value)) {
       foreach ($value as $item) {
-        $data[] = $item;
+        $data[] = $this->cleanSelectId($item);
       }
     }
     elseif (!empty($value)) {
-      $data[] = $value;
+      $data[] = $this->cleanSelectId($value);
     }
     return $data;
+  }
+
+  /**
+   * Clear item from select2 $ID.
+   *
+   * @param string $value
+   *   Value that we want to clean.
+   *
+   * @return array
+   *   String without $ID:.
+   */
+  private function cleanSelectId($value) {
+    if (substr($value, 0, 4) === "\$ID:") {
+      return substr($value, 4);
+    }
+    return $value;
   }
 
   /**

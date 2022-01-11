@@ -21,9 +21,9 @@
     "require": {
         "composer/installers": "^1.9",
         "cweagans/composer-patches": "^1.7",
-        "drupal/core-composer-scaffold": "~9.0.1",
-        "drupal/core-project-message": "~9.0.1",
-        "drupal/core-recommended": "~9.0.1",
+        "drupal/core-composer-scaffold": "^9.0.1",
+        "drupal/core-project-message": "^9.0.1",
+        "drupal/core-recommended": "^9.0.1",
         "drupal/group": "^1.4",
         "drush/drush": "^10.1",
         "getdkan/dkan": "^2.10"

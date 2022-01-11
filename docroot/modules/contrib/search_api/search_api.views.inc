@@ -79,6 +79,11 @@ function search_api_views_data() {
           if ($datasource = $field->getDatasource()) {
             $field_definition['group'] = t('@datasource datasource', ['@datasource' => $datasource->label()]);
           }
+          else {
+            // Backend defined fields that don't have a datasource should be
+            // treated like special fields.
+            $field_definition['group'] = t('Search');
+          }
           if ($field_id != $field_alias) {
             $field_definition['real field'] = $field_id;
           }
@@ -155,6 +160,7 @@ function search_api_views_plugins_row_alter(array &$plugins) {
   }
 
   $plugins['search_api']['base'] = $bases;
+  $plugins['search_api_data']['base'] = $bases;
 }
 
 /**

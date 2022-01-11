@@ -98,6 +98,7 @@ class WidgetRouter implements ContainerInjectionInterface {
       'list' => 'handleListElement',
       'date' => 'handleDateElement',
       'flexible_datetime' => 'handleDatetimeElement',
+      'date_range' => 'handleDateRangeElement',
     ];
   }
 
@@ -244,6 +245,7 @@ class WidgetRouter implements ContainerInjectionInterface {
     $options = [];
     $values = $this->metastore->getAll($source->metastoreSchema);
     foreach ($values as $value) {
+      $value = json_decode($value);
       if ($titleProperty) {
         $options[$value->data->{$titleProperty}] = $value->data->{$titleProperty};
       }
@@ -387,6 +389,22 @@ class WidgetRouter implements ContainerInjectionInterface {
     if (isset($spec->timeRequired) && is_bool($spec->timeRequired)) {
       $element['#date_time_required'] = $spec->timeRequired;
     }
+    return $element;
+  }
+
+  /**
+   * Helper function for getting a date_range element.
+   *
+   * @param mixed $spec
+   *   Element to convert into date_range.
+   * @param array $element
+   *   Object with spec for UI options.
+   *
+   * @return array
+   *   The element configured as date_range.
+   */
+  public function handleDateRangeElement($spec, array $element) {
+    $element['#type'] = 'date_range';
     return $element;
   }
 

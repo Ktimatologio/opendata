@@ -2,7 +2,7 @@ dkan.harvest.1.harvest:
   path: '/api/1/harvest'
   methods: [GET]
   defaults:
-    { _controller: '\Drupal\common\Docs::getComplete'}
+    { _controller: '\Drupal\common\Controller\OpenApiController::getComplete'}
   requirements:
     _permission: 'access content'
   options:
@@ -85,5 +85,16 @@ dkan.harvest.api.runs_id:
     { _controller: '\Drupal\harvest\WebServiceApi::infoRun'}
   requirements:
     _permission: 'harvest_api_info'
+  options:
+    _auth: ['basic_auth', 'cookie']
+
+dkan.harvest.dashboard:
+  path: '/admin/dkan/harvest'
+  methods: [GET]
+  defaults:
+    _controller: '\Drupal\harvest\DashboardController::harvests'
+    _title: Harvests
+  requirements:
+    _permission: 'dkan.haverst.dashboard'
   options:
     _auth: ['basic_auth', 'cookie']

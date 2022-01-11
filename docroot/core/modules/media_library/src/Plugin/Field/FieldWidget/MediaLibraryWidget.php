@@ -16,14 +16,13 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Security\TrustedCallbackInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\field_ui\FieldUI;
 use Drupal\media\Entity\Media;
-use Drupal\media_library\MediaLibraryUiBuilder;
 use Drupal\media_library\MediaLibraryState;
+use Drupal\media_library\MediaLibraryUiBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
@@ -43,7 +42,7 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
  * @internal
  *   Plugin classes are internal.
  */
-class MediaLibraryWidget extends WidgetBase implements ContainerFactoryPluginInterface, TrustedCallbackInterface {
+class MediaLibraryWidget extends WidgetBase implements TrustedCallbackInterface {
 
   /**
    * Entity type manager service.
@@ -139,7 +138,7 @@ class MediaLibraryWidget extends WidgetBase implements ContainerFactoryPluginInt
     $handler_settings = $this->getFieldSetting('handler_settings');
     // The target bundles will be blank when saving field storage settings,
     // when first adding a media reference field.
-    $allowed_media_type_ids = isset($handler_settings['target_bundles']) ? $handler_settings['target_bundles'] : NULL;
+    $allowed_media_type_ids = $handler_settings['target_bundles'] ?? NULL;
 
     // When there are no allowed media types, return the empty array.
     if ($allowed_media_type_ids === []) {
@@ -175,13 +174,14 @@ class MediaLibraryWidget extends WidgetBase implements ContainerFactoryPluginInt
    * {@inheritdoc}
    */
   public function settingsForm(array $form, FormStateInterface $form_state) {
+    $elements = [];
     $media_type_ids = $this->getAllowedMediaTypeIdsSorted();
 
     if (count($media_type_ids) <= 1) {
-      return $form;
+      return $elements;
     }
 
-    $form['media_types'] = [
+    $elements['media_types'] = [
       '#type' => 'table',
       '#header' => [
         $this->t('Tab order'),
@@ -201,7 +201,7 @@ class MediaLibraryWidget extends WidgetBase implements ContainerFactoryPluginInt
     $weight = 0;
     foreach ($media_types as $media_type_id => $media_type) {
       $label = $media_type->label();
-      $form['media_types'][$media_type_id] = [
+      $elements['media_types'][$media_type_id] = [
         'label' => ['#markup' => $label],
         'weight' => [
           '#type' => 'weight',
@@ -216,7 +216,7 @@ class MediaLibraryWidget extends WidgetBase implements ContainerFactoryPluginInt
       $weight++;
     }
 
-    return $form;
+    return $elements;
   }
 
   /**
@@ -238,7 +238,7 @@ class MediaLibraryWidget extends WidgetBase implements ContainerFactoryPluginInt
    */
   public static function setMediaTypesValue(array &$element, $input, FormStateInterface $form_state) {
     if ($input === FALSE) {
-      return isset($element['#default_value']) ? $element['#default_value'] : [];
+      return $element['#default_value'] ?? [];
     }
 
     // Sort the media types by weight value and set the value in the form state.
@@ -305,7 +305,8 @@ class MediaLibraryWidget extends WidgetBase implements ContainerFactoryPluginInt
     $element += [
       '#type' => 'fieldset',
       '#cardinality' => $this->fieldDefinition->getFieldStorageDefinition()->getCardinality(),
-      '#target_bundles' => isset($settings['target_bundles']) ? $settings['target_bundles'] : FALSE,
+      // If no target bundles are specified, all target bundles are allowed.
+      '#target_bundles' => $settings['target_bundles'] ?? [],
       '#attributes' => [
         'id' => $wrapper_id,
         'class' => ['js-media-library-widget'],
@@ -320,6 +321,10 @@ class MediaLibraryWidget extends WidgetBase implements ContainerFactoryPluginInt
         'fieldset__media_library_widget',
       ],
     ];
+
+    if ($this->fieldDefinition->isRequired()) {
+      $element['#element_validate'][] = [static::class, 'validateRequired'];
+    }
 
     // When the list of allowed types in the field configuration is null,
     // ::getAllowedMediaTypeIdsSorted() returns all existing media types. When
@@ -485,9 +490,6 @@ class MediaLibraryWidget extends WidgetBase implements ContainerFactoryPluginInt
         'class' => [
           'js-media-library-open-button',
         ],
-        // The jQuery UI dialog automatically moves focus to the first :tabbable
-        // element of the modal, so we need to disable refocus on the button.
-        'data-disable-refocus' => 'true',
       ],
       '#media_library_state' => $state,
       '#ajax' => [
@@ -496,6 +498,9 @@ class MediaLibraryWidget extends WidgetBase implements ContainerFactoryPluginInt
           'type' => 'throbber',
           'message' => $this->t('Opening media library.'),
         ],
+        // The AJAX system automatically moves focus to the first tabbable
+        // element of the modal, so we need to disable refocus on the button.
+        'disable-refocus' => TRUE,
       ],
       // Allow the media library to be opened even if there are form errors.
       '#limit_validation_errors' => [],
@@ -632,7 +637,7 @@ class MediaLibraryWidget extends WidgetBase implements ContainerFactoryPluginInt
    * {@inheritdoc}
    */
   public function errorElement(array $element, ConstraintViolationInterface $error, array $form, FormStateInterface $form_state) {
-    return isset($element['target_id']) ? $element['target_id'] : FALSE;
+    return $element['target_id'] ?? FALSE;
   }
 
   /**
@@ -916,10 +921,10 @@ class MediaLibraryWidget extends WidgetBase implements ContainerFactoryPluginInt
     // is used, the unvalidated user input is not added to the form state.
     // @see FormValidator::handleErrorsWithLimitedValidation()
     $values = NestedArray::getValue($form_state->getUserInput(), $path);
-    $selection = isset($values['selection']) ? $values['selection'] : [];
+    $selection = $values['selection'] ?? [];
 
     $widget_state = static::getWidgetState($element['#field_parents'], $element['#field_name'], $form_state);
-    $widget_state['items'] = isset($widget_state['items']) ? $widget_state['items'] : $selection;
+    $widget_state['items'] = $widget_state['items'] ?? $selection;
     return $widget_state;
   }
 
@@ -938,6 +943,31 @@ class MediaLibraryWidget extends WidgetBase implements ContainerFactoryPluginInt
    */
   protected static function setFieldState(array $element, FormStateInterface $form_state, array $field_state) {
     static::setWidgetState($element['#field_parents'], $element['#field_name'], $form_state, $field_state);
+  }
+
+  /**
+   * Validates whether the widget is required and contains values.
+   *
+   * @param array $element
+   *   The form element.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
+   * @param array $form
+   *   The form array.
+   */
+  public static function validateRequired(array $element, FormStateInterface $form_state, array $form) {
+    // If a remove button triggered submit, this validation isn't needed.
+    if (in_array([static::class, 'removeItem'], $form_state->getSubmitHandlers(), TRUE)) {
+      return;
+    }
+
+    $field_state = static::getFieldState($element, $form_state);
+    // Trigger error if the field is required and no media is present. Although
+    // the Form API's default validation would also catch this, the validation
+    // error message is too vague, so a more precise one is provided here.
+    if (count($field_state['items']) === 0) {
+      $form_state->setError($element, t('@name field is required.', ['@name' => $element['#title']]));
+    }
   }
 
 }

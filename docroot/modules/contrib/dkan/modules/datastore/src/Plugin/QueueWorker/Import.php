@@ -2,10 +2,15 @@
 
 namespace Drupal\datastore\Plugin\QueueWorker;
 
-use Drupal\Core\Logger\RfcLogLevel;
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Queue\QueueWorkerBase;
+use Drupal\Core\Database\Connection;
+
 use Drupal\common\LoggerTrait;
+use Drupal\datastore\Service as DatastoreService;
+use Drupal\metastore\Reference\ReferenceLookup;
 use Procrastinator\Result;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -15,22 +20,49 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @QueueWorker(
  *   id = "datastore_import",
  *   title = @Translation("Queue to process datastore import"),
- *   cron = {"time" = 60}
+ *   cron = {
+ *     "time" = 180,
+ *     "lease_time" = 10800
+ *   }
  * )
  */
 class Import extends QueueWorkerBase implements ContainerFactoryPluginInterface {
   use LoggerTrait;
 
-  private $container;
+  /**
+   * This queue worker's corresponding database queue instance.
+   *
+   * @var \Drupal\Core\Queue\DatabaseQueue
+   */
+  protected $databaseQueue;
 
   /**
-   * Inherited.
+   * DKAN datastore service instance.
    *
-   * {@inheritdoc}
+   * @var \Drupal\datastore\Service
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new Import($configuration, $plugin_id, $plugin_definition, $container);
-  }
+  protected $datastore;
+
+  /**
+   * Reference lookup service.
+   *
+   * @var \Drupal\metastore\Reference\ReferenceLookup
+   */
+  protected $referenceLookup;
+
+  /**
+   * Datastore config settings.
+   *
+   * @var \Drupal\Core\Config\Config
+   */
+  protected $datastoreConfig;
+
+  /**
+   * File system service.
+   *
+   * @var \Drupal\Core\File\FileSystemInterface
+   */
+  protected $fileSystem;
 
   /**
    * Constructs a \Drupal\Component\Plugin\PluginBase object.
@@ -41,75 +73,160 @@ class Import extends QueueWorkerBase implements ContainerFactoryPluginInterface 
    *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
-   * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
-   *   A dependency injection container.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
+   *   A config factory instance.
+   * @param \Drupal\datastore\Service $datastore
+   *   A DKAN datastore service instance.
+   * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $loggerFactory
+   *   A logger channel factory instance.
+   * @param \Drupal\metastore\Reference\ReferenceLookup $referenceLookup
+   *   The reference lookup service.
+   * @param \Drupal\Core\Database\Connection $defaultConnection
+   *   An instance of the default database connection.
+   * @param \Drupal\Core\Database\Connection $datastoreConnection
+   *   An instance of the datastore database connection.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, ContainerInterface $container) {
+  public function __construct(
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+    ConfigFactoryInterface $configFactory,
+    DatastoreService $datastore,
+    LoggerChannelFactoryInterface $loggerFactory,
+    ReferenceLookup $referenceLookup,
+    Connection $defaultConnection,
+    Connection $datastoreConnection
+  ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->container = $container;
+    $this->datastore = $datastore;
+    $this->referenceLookup = $referenceLookup;
+    $this->datastoreConfig = $configFactory->get('datastore.settings');
+    $this->databaseQueue = $datastore->getQueueFactory()->get($plugin_id);
+    $this->fileSystem = $datastore->getResourceLocalizer()->getFileSystem();
+    $this->setLoggerFactory($loggerFactory, 'datastore');
+    // Set the timeout for database connections to the queue lease time.
+    // This ensures that database connections will remain open for the
+    // duration of the time the queue is being processed.
+    $timeout = (int) $plugin_definition['cron']['lease_time'];
+    $this->setConnectionTimeout($datastoreConnection, $timeout);
+    $this->setConnectionTimeout($defaultConnection, $timeout);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('config.factory'),
+      $container->get('dkan.datastore.service'),
+      $container->get('logger.factory'),
+      $container->get('dkan.metastore.reference_lookup'),
+      $container->get('database'),
+      $container->get('dkan.datastore.database')
+    );
+  }
+
+  /**
+   * Set the wait_timeout for the given database connection.
+   *
+   * @param \Drupal\Core\Database\Connection $connection
+   *   Database connection instance.
+   * @param int $timeout
+   *   Wait timeout in seconds.
+   */
+  protected function setConnectionTimeout(Connection $connection, int $timeout): void {
+    $command = 'SET SESSION wait_timeout = ' . $timeout;
+    $connection->query($command);
   }
 
   /**
    * {@inheritdoc}
    */
   public function processItem($data) {
-
     if (is_object($data) && isset($data->data)) {
       $data = $data->data;
     }
 
     try {
-      $identifier = $data['identifier'];
-      $version = $data['version'];
-
-      /** @var \Drupal\datastore\Service $datastore */
-      $datastore = $this->container->get('dkan.datastore.service');
-
-      $results = $datastore->import($identifier, FALSE, $version);
-
-      $queued = FALSE;
-      foreach ($results as $result) {
-        $queued = $this->processResult($result, $data, $queued);
-      }
+      $this->importData($data);
     }
     catch (\Exception $e) {
-      $this->log(RfcLogLevel::ERROR,
-        "Import for {$data['identifier']} returned an error: {$e->getMessage()}");
+      $this->error("Import for {$data['identifier']} returned an error: {$e->getMessage()}");
     }
   }
 
   /**
-   * Private.
+   * Perform the actual data import.
+   *
+   * @param array $data
+   *   Resource identifier information.
    */
-  private function processResult(Result $result, $data, $queued = FALSE) {
+  protected function importData(array $data) {
     $identifier = $data['identifier'];
     $version = $data['version'];
-    $uid = "{$identifier}__{$version}";
+    $results = $this->datastore->import($identifier, FALSE, $version);
 
-    $level = RfcLogLevel::INFO;
-    $message = "";
+    $queued = FALSE;
+    foreach ($results as $result) {
+      $queued = isset($result) ? $this->processResult($result, $data, $queued) : FALSE;
+    }
+
+    // Delete local resource file if enabled in datastore settings config.
+    if ($this->datastoreConfig->get('delete_local_resource')) {
+      $this->fileSystem->deleteRecursive("public://resources/{$identifier}_{$version}");
+    }
+  }
+
+  /**
+   * Process the result of the import operation.
+   *
+   * @param \Procrastinator\Result $result
+   *   The result object.
+   * @param mixed $data
+   *   The resource data for import.
+   * @param bool $queued
+   *   Whether the import job is currently queued.
+   *
+   * @return bool
+   *   The updated value for $queued.
+   */
+  protected function processResult(Result $result, $data, $queued = FALSE) {
+    $uid = "{$data['identifier']}__{$data['version']}";
     $status = $result->getStatus();
     switch ($status) {
       case Result::STOPPED:
         if (!$queued) {
           $newQueueItemId = $this->requeue($data);
-          $message = "Import for {$uid} is requeueing. (ID:{$newQueueItemId}).";
+          $this->notice("Import for {$uid} is requeueing. (ID:{$newQueueItemId}).");
           $queued = TRUE;
         }
         break;
 
       case Result::IN_PROGRESS:
       case Result::ERROR:
-        $level = RfcLogLevel::ERROR;
-        $message = "Import for {$uid} returned an error: {$result->getError()}";
+        $this->error("Import for {$uid} returned an error: {$result->getError()}");
         break;
 
       case Result::DONE:
-        $message = "Import for {$uid} completed.";
+        $this->notice("Import for {$uid} completed.");
+        $this->invalidateCacheTags("{$uid}__source");
         break;
     }
-    $this->log('dkan', $message, [], $level);
+
     return $queued;
+  }
+
+  /**
+   * Invalidate all appropriate cache tags for this resource.
+   *
+   * @param mixed $resourceId
+   *   A resource ID.
+   */
+  protected function invalidateCacheTags($resourceId) {
+    $this->referenceLookup->invalidateReferencerCacheTags('distribution', $resourceId, 'downloadURL');
   }
 
   /**
@@ -121,12 +238,10 @@ class Import extends QueueWorkerBase implements ContainerFactoryPluginInterface 
    * @return mixed
    *   Queue ID or false if unsuccessful.
    *
-   * @todo: Clarify return value. Documentation suggests it should return ID.
+   * @todo Clarify return value. Documentation suggests it should return ID.
    */
   protected function requeue(array $data) {
-    return $this->container->get('queue')
-      ->get($this->getPluginId())
-      ->createItem($data);
+    return $this->databaseQueue->createItem($data);
   }
 
 }

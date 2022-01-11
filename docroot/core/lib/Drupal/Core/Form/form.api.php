@@ -61,7 +61,7 @@ function callback_batch_operation($multiple_params, &$context) {
   if (!isset($context['sandbox']['progress'])) {
     $context['sandbox']['progress'] = 0;
     $context['sandbox']['current_node'] = 0;
-    $context['sandbox']['max'] = $database->query('SELECT COUNT(DISTINCT nid) FROM {node}')->fetchField();
+    $context['sandbox']['max'] = $database->query('SELECT COUNT(DISTINCT [nid]) FROM {node}')->fetchField();
   }
 
   // For this example, we decide that we can safely process
@@ -69,7 +69,7 @@ function callback_batch_operation($multiple_params, &$context) {
   $limit = 5;
 
   // With each pass through the callback, retrieve the next group of nids.
-  $result = $database->queryRange("SELECT nid FROM {node} WHERE nid > :nid ORDER BY nid ASC", 0, $limit, [':nid' => $context['sandbox']['current_node']]);
+  $result = $database->queryRange("SELECT [nid] FROM {node} WHERE [nid] > :nid ORDER BY [nid] ASC", 0, $limit, [':nid' => $context['sandbox']['current_node']]);
   foreach ($result as $row) {
 
     // Here we actually perform our processing on the current node.
@@ -169,7 +169,7 @@ function hook_ajax_render_alter(array &$data) {
  * $form_state->getFormObject()->getEntity().
  *
  * Implementations are responsible for adding cache contexts/tags/max-age as
- * needed. See https://www.drupal.org/developing/api/8/cache.
+ * needed. See https://www.drupal.org/docs/8/api/cache-api/cache-api.
  *
  * In addition to hook_form_alter(), which is called for all forms, there are
  * two more specific form hooks available. The first,
@@ -220,7 +220,7 @@ function hook_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_stat
  * Provide a form-specific alteration instead of the global hook_form_alter().
  *
  * Implementations are responsible for adding cache contexts/tags/max-age as
- * needed. See https://www.drupal.org/developing/api/8/cache.
+ * needed. See https://www.drupal.org/docs/8/api/cache-api/cache-api.
  *
  * Modules can implement hook_form_FORM_ID_alter() to modify a specific form,
  * rather than implementing hook_form_alter() and checking the form ID, or
@@ -263,7 +263,7 @@ function hook_form_FORM_ID_alter(&$form, \Drupal\Core\Form\FormStateInterface $f
  * Provide a form-specific alteration for shared ('base') forms.
  *
  * Implementations are responsible for adding cache contexts/tags/max-age as
- * needed. See https://www.drupal.org/developing/api/8/cache.
+ * needed. See https://www.drupal.org/docs/8/api/cache-api/cache-api.
  *
  * By default, when \Drupal::formBuilder()->getForm() is called, Drupal looks
  * for a function with the same name as the form ID, and uses that function to

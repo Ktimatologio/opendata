@@ -39,7 +39,7 @@ class TextFormat extends RenderElement {
    * {@inheritdoc}
    */
   public function getInfo() {
-    $class = get_class($this);
+    $class = static::class;
     return [
       '#process' => [
         [$class, 'processFormat'],
@@ -163,6 +163,11 @@ class TextFormat extends RenderElement {
       if ($element['#format'] !== $fallback_format && count($formats) > 1) {
         unset($formats[$fallback_format]);
       }
+    }
+
+    // If the value element has #states set, copy it to the format element.
+    if (isset($element['value']['#states'])) {
+      $element['format']['#states'] = $element['value']['#states'];
     }
 
     // Prepare text format guidelines.

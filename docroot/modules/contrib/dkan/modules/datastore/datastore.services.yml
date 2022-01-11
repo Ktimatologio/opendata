@@ -6,6 +6,7 @@ services:
       - '@dkan.datastore.service.factory.import'
       - '@queue'
       - '@dkan.common.job_store'
+      - '@dkan.datastore.import_info_list'
 
   dkan.datastore.service.resource_localizer:
     class: \Drupal\datastore\Service\ResourceLocalizer
@@ -19,6 +20,7 @@ services:
     class: \Drupal\datastore\Service\ResourcePurger
     arguments:
       - '@config.factory'
+      - '@dkan.metastore.reference_lookup'
       - '@dkan.metastore.storage'
       - '@dkan.datastore.service'
     calls:
@@ -34,10 +36,16 @@ services:
     parent: logger.channel_base
     arguments: ['datastore']
 
+  dkan.datastore.database:
+    class: \Drupal\Core\Database\Connection
+    factory: \Drupal\datastore\Storage\DatabaseConnectionFactory::getConnection
+
   dkan.datastore.database_table_factory:
     class: \Drupal\datastore\Storage\DatabaseTableFactory
     arguments:
-      - '@database'
+      - '@dkan.datastore.database'
+    calls:
+      - [setIndexManager, ['@?indexer.indexmanager']]
 
   dkan.datastore.sql_endpoint.service:
     class: \Drupal\datastore\SqlEndpoint\Service
@@ -46,7 +54,13 @@ services:
       - '@config.factory'
 
   dkan.datastore.event_subscriber:
-    class: \Drupal\datastore\EventSubscriber\Subscriber
+    class: \Drupal\datastore\EventSubscriber\DatastoreSubscriber
+    arguments:
+      - '@config.factory'
+      - '@logger.factory'
+      - '@dkan.datastore.service'
+      - '@dkan.datastore.service.resource_purger'
+      - '@dkan.common.job_store'
     tags:
       - { name: event_subscriber }
 
