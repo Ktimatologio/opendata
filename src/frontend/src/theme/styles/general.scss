@@ -66,12 +66,12 @@ body {
   background: transparent;
   border: none;
   font-size: 14px;
-  color: #fff;
+  color: white;
 }
 
 #top-box {
-  height: 50px;
-  color: #fff;
+  height: auto;
+  color: white;
   background-color: $primary;
 }
 
@@ -85,7 +85,7 @@ body {
   border-radius: 100%;
 }
 .icon {
-  background: #fff;
+  background: white;
   display: inline-block;
   font-size: 20px;
   width: 34px;
@@ -95,6 +95,14 @@ body {
   text-align: center;
   text-decoration: none;
   vertical-align: top;
+}
+
+@media screen and (max-width: 768px) {
+  #top-box {
+    .logo-container {
+      text-align: center;
+    }
+  }
 }
 
 
