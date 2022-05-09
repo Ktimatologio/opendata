@@ -1,9 +1,15 @@
 <?php
-$str = file_get_contents('https://maps.gov.gr/gis/map/Stats/getStat/'.$_GET["stat"]);
+$arrContextOptions = array(
+  "ssl" => array(
+    "verify_peer" => false,
+    "verify_peer_name" => false,
+  ),
+); 
+$str = file_get_contents('https://maps.gov.gr/gis/map/Stats/getStat/'.$_GET["stat"], false, stream_context_create($arrContextOptions));
 
 $array = array();
 $array = preg_split('/\n|\r\n?/', $str);
-$date = preg_split('#\r?\n#', $str, 0)[0];
+// $date = preg_split('#\r?\n#', $str, 0)[0];
 array_shift($array);
 
 if($_GET["stat"] == 1) {
@@ -15,8 +21,9 @@ if($_GET["stat"] == 1) {
     }
   }
   $date = explode('|', $date);
-  $date = array("Τελ. ενημέρωση" => $date[0]);
-  echo json_encode(array_merge($array, $date));
+  // $date = array("Τελ. ενημέρωση" => $date[0]);
+  // echo json_encode(array_merge($array, $date));
+  echo json_encode($array);
   
 } 
 elseif($_GET["stat"] == 2) {

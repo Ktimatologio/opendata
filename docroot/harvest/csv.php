@@ -1,5 +1,11 @@
 <?php
-$str = file_get_contents('https://maps.gov.gr/gis/map/Stats/getStat/'.$_GET["stat"]);
+$arrContextOptions = array(
+  "ssl" => array(
+    "verify_peer" => false,
+    "verify_peer_name" => false,
+  ),
+);
+$str = file_get_contents('https://maps.gov.gr/gis/map/Stats/getStat/'.$_GET["stat"], false, stream_context_create($arrContextOptions));
 
 $array = array();
 $array = preg_split('/\n|\r\n?/', $str);
